@@ -1,0 +1,195 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>微信通讯录</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/skel.min.js' %}"></script>
+		<script src="{% static 'js/skel-layers.min.js' %}"></script>
+		<script src="{% static 'js/init.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+		<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //弹出层
+            $("#btnShowDiv").click(function (event) {
+                $("#racePop").show(300);
+            });
+            //隐藏层
+            $("#aClose").click(function (event) {
+                $("#racePop").hide(300);
+            });
+        });
+        </script>
+	</head>
+	<body onload="hiden()">
+    <script>
+        function hiden()
+        {
+            document.getElementById("aClose").click();
+        }
+    </script>
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert('Error: {{message.message}}');
+    </script>
+    {% endfor %}{% endif %}
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="/index">Refresh</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="#show">功能简介</a></li>
+						<li>
+                            <a href="#registe" class="button special ">注册</a>
+                        </li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Banner -->
+			<section id="banner">
+				<h2>微信通讯录模拟网页版</h2>
+                <p>数据库+Django</p>
+                <p>前端设计 田宏韬 后端设计 田宏韬</p>
+				<ul class="actions">
+					<li>
+						<input type="button" value="点此登录" id="btnShowDiv" class="button big" />
+                        <div id="racePop" class="raceShow">
+                            <div class="div" style="width: 100%; height: 100%; overflow-y: auto; ">
+                                    <form action="login" method="get">
+                                        <div class="row uniform">
+                                            <div class="6u 12u$(small)">
+                                                <input name="Wechat-ID" id="Wechat-ID" value="" placeholder="Wechat-ID" type="text">
+                                            </div>
+                                            <div class="6u 12u$(small)">
+                                                <input name="Password" id="Password" value="" placeholder="Password" type="password">
+                                            </div>
+                                        </div>
+                                        <input type="button" value="隐藏" id="aClose">
+                                        <input type="submit" value="确定" id="submit">
+                                    </form>
+                            </div>
+                        </div>
+                    </li>
+				</ul>
+			</section>
+
+        <!-- 信息介绍 -->
+             <a name="show"></a>
+             <section id="one" class="wrapper style1 special">
+				<div class="container">
+					<header class="major">
+						<h2>功能简介</h2>
+						<p>本处为大家简单介绍本项目的部分功能</p>
+					</header>
+					<div class="row 150%">
+						<div class="4u 12u$(medium)">
+							<section class="box">
+								<i class="icon big rounded color1 fa-cloud"></i>
+								<h3>用户注册登录</h3>
+								<p>用户使用网页向服务器提交表单,用以注册;登录时若未显示提交表单请点击戳一戳按钮！</p>
+							</section>
+						</div>
+						<div class="4u 12u$(medium)">
+							<section class="box">
+								<i class="icon big rounded color9 fa-desktop"></i>
+								<h3>用户名片更改,查询</h3>
+								<p>用户可以更改自己的名片和寻找他人的名片,通过这个页面可以寻找到志同道合的好友哟！</p>
+							</section>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<section class="box">
+								<i class="icon big rounded color6 fa-rocket"></i>
+								<h3>用户好友更改,查询</h3>
+								<p>在这个页面可以管理自己的好友,拥有更改好友备注,删除好友,查看好友名片等多种功能！</p>
+							</section>
+						</div>
+					</div>
+				</div>
+			</section>
+        <!-- 用户注册 -->
+            <a name="registe"></a>
+			<section id="two" class="wrapper style3 special">
+				<div class="container">
+					<header class="major">
+						<h2>用户注册</h2>
+						<p>请如实填写以下信息,以便于我们了解更多</p>
+					</header>
+				</div>
+				<div class="container 50%">
+					<form action="registe" method="post">
+                        {% csrf_token %}
+						<div class="row uniform">
+							<div class="6u 12u$(small)">
+								<input name="Wechat-ID" id="Wechat-ID" value="" placeholder="Wechat (required)" type="text">
+							</div>
+							<div class="6u$ 12u$(small)">
+								<input name="Password" id="Password" value="" placeholder="Password (required)" type="password">
+							</div>
+                            <div class="6u 12u$(small)">
+								<input name="Username" id="Username" value="" placeholder="Username (required)" type="text">
+							</div>
+							<div class="6u$ 12u$(small)">
+								<input name="Email" id="Email" value="" placeholder="Email (required)" type="Email">
+							</div>
+                            <div class="6u 12u$(small)">
+								<input name="Phone" id="Phone" value="" placeholder="Phone" type="text">
+							</div>
+							<div class="6u$ 12u$(small)">
+								<input name="Location" id="Location" value="" placeholder="Location" type="text">
+							</div>
+							<div class="12u$">
+								<textarea name="signature" id="signature" placeholder="Personalized signature" rows="6"></textarea>
+							</div>
+							<div class="12u$">
+								<ul class="actions">
+									<li><input value="确定注册" class="special big" type="submit"></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<div class="row">
+						<div class="8u 12u$(medium)">
+							<ul class="copyright">
+								<li>Untitled. All rights reserved.</li>
+								<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+								<li>Changed: <a href="https://github.com/TianHongTao">THT</a></li>
+								<li>Images: <a href="http://unsplash.com">Unsplash</a></li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<ul class="icons">
+								<li>
+									<a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+	</body>
+</html>

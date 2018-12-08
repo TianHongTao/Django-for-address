@@ -1,0 +1,131 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--
+	Transit by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>我的名片</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/skel.min.js' %}"></script>
+		<script src="{% static 'js/skel-layers.min.js' %}"></script>
+		<script src="{% static 'js/init.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+		<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
+    </head>
+	<body>
+
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert('Error: {{message.message}}');
+    </script>
+    {% endfor %}{% endif %}
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="/myself">Refresh</a></h1>
+				<nav id="nav">
+					<ul>
+						<li>
+                            <a href="/friend/">返回好友展示页面</a>
+                        </li>
+						<li>
+                            <a href="/index/" class="button special ">返回登录页面</a>
+                        </li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="container">
+
+					<header class="major">
+						<h2>名片信息展示</h2>
+						<p>若需要修改名片请填写表单后点击提交按钮</p>
+                   </header>
+
+					<!-- Form -->
+						<section>
+                        <div class="container 50%">
+                                <form action="modifyinfo" method="post">
+                                    {% csrf_token %}
+                                    <div class="row uniform">
+                                        <div class="6u 12u$(small)">
+                                            <input name="Wechat-ID" id="Wechat-ID" value="{{WechatID}}" placeholder="Wechat" type="text">
+                                        </div>
+                                        <div class="6u$ 12u$(small)">
+                                            <input name="Password" id="Password" value="{{Password}}" placeholder="Password" type="text">
+                                        </div>
+                                        <div class="6u 12u$(small)">
+                                            <input name="Username" id="Username" value="{{Username}}" placeholder="Username" type="text">
+                                        </div>
+                                        <div class="6u$ 12u$(small)">
+                                            <input name="Email" id="Email" value="{{Email}}" placeholder="Email" type="Email">
+                                        </div>
+                                        <div class="6u 12u$(small)">
+                                            <input name="Phone" id="Phone" value="{{Phone}}" placeholder="Phone" type="text">
+                                        </div>
+                                        <div class="6u$ 12u$(small)">
+                                            <input name="Location" id="Location" value="{{Location}}" placeholder="Location" type="text">
+                                        </div>
+                                        <div class="12u$">
+                                            <textarea name="signature" id="signature" placeholder="{{signature}}" rows="6"></textarea>
+                                        </div>
+                                        <div class="12u$">
+                                            <div class="align-center">
+                                            <ul class="actions">
+                                                <li><input value="修改" class="special big" type="submit"></li>
+                                            </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+						</section>
+
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<div class="row">
+						<div class="8u 12u$(medium)">
+							<ul class="copyright">
+								<li>Untitled. All rights reserved.</li>
+								<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+								<li>Changed: <a href="https://github.com/TianHongTao">THT</a></li>
+								<li>Images: <a href="http://unsplash.com">Unsplash</a></li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<ul class="icons">
+								<li>
+									<a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+
+	</body>
+</html>

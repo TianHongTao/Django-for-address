@@ -1,0 +1,236 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--
+	Transit by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>好友信息展示</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/skel.min.js' %}"></script>
+		<script src="{% static 'js/skel-layers.min.js' %}"></script>
+		<script src="{% static 'js/init.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+		<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            //隐藏层
+            $("#aClose0").click(function (event) {
+                $("#racePop0").hide(300);
+            });
+            //弹出层
+            $("#btnShowDiv0").click(function (event) {
+                $("#racePop0").show(300);
+            });
+            //弹出层
+            $("#btnShowDiv1").click(function (event) {
+                $("#racePop1").show(300);
+            });
+            //隐藏层
+            $("#aClose1").click(function (event) {
+                $("#racePop1").hide(300);
+            });
+            //弹出层
+            $("#btnShowDiv2").click(function (event) {
+                $("#racePop2").show(300);
+            });
+            //隐藏层
+            $("#aClose2").click(function (event) {
+                $("#racePop2").hide(300);
+            });
+            //弹出层
+            $("#btnShowDiv3").click(function (event) {
+                $("#racePop3").show(300);
+            });
+            //隐藏层
+            $("#aClose3").click(function (event) {
+                $("#racePop3").hide(300);
+            });
+            //弹出层
+            $("#btnShowDiv4").click(function (event) {
+                $("#racePop4").show(300);
+            });
+            //隐藏层
+            $("#aClose4").click(function (event) {
+                $("#racePop4").hide(300);
+            }); //弹出层
+            $("#btnShowDiv5").click(function (event) {
+                $("#racePop5").show(300);
+            });
+            //隐藏层
+            $("#aClose5").click(function (event) {
+                $("#racePop5").hide(300);
+            });
+        });
+        </script>
+	</head>
+	<body onload="hiden()">
+    <script>
+        function hiden()
+        {
+            document.getElementById("aClose0").click();
+            document.getElementById("aClose1").click();
+            document.getElementById("aClose2").click();
+            document.getElementById("aClose3").click();
+            document.getElementById("aClose4").click();
+            document.getElementById("aClose5").click();
+        }
+    </script>
+
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert('Error: {{message.message}}');
+    </script>
+    {% endfor %}{% endif %}
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="/friend">Refresh</a></h1>
+				<nav id="nav">
+					<ul>
+						<li>
+                            <a href="/myself/" class="">自我名片展示</a>
+                        </li>
+						<li>
+                            <a href="/index/" class="button special ">返回登录页面</a>
+                        </li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="container">
+
+					<header class="major">
+						<h2>您添加了的好友</h2>
+						<p>您可以点击好友旁的戳一戳按钮来查看好友名片</p>
+                        <input type="button" value="好友搜索" id="btnShowDiv5" class="button big" />
+                        <p></p>
+                        <div id="racePop5" class="raceShow5">
+                            <form action="someone" method="post">
+                            {% csrf_token %}
+                                <div class="align-middle">
+                                        <input type="text" name="Wechat-ID" id="Wechat-ID" value="" placeholder="Wechat-ID">
+                                </div>
+                                <p></p>
+                                <input type="button" value="隐藏" id="aClose5" class="button">
+                                <input value="搜索" class="button" type="submit">
+                            </form>
+                            <p>点击搜索按钮展示对方名片</p>
+                        </div>
+					</header>
+
+					<!-- Table -->
+						<section>
+							<h3>用户信息展示</h3>
+							<div class="table-wrapper">
+								<table>
+									<thead>
+										<tr>
+											<th>Remark</th>
+											<th>Personalized signature</th>
+											<th>Show</th>
+										</tr>
+									</thead>
+									<tbody>
+                                    {% load set_val %}
+                                    {% with i=0 %}
+                                    {% set i = 0 %}
+                                        {% for info in infos %}
+                                            <tr>
+                                                <td>{{ info.Remark }}</td>
+                                                <td>{{ info.signature }}</td>
+                                                <td>
+                                                    <input type="button" value="戳一戳" id="btnShowDiv{{ i }}" class="button small" />
+                                                    <div id="racePop{{ i }}" class="raceShow{{ i }}">
+                                                        <div class="div" style="width: 100%; height: 100%; overflow-y: auto; ">
+                                                                <form action="delete" method="post" id="form1">
+                                                                    {% csrf_token %}
+                                                                    <div class="row uniform">
+                                                                        <div class="6u 12u$(small)">
+                                                                            <input name="WechatID" id="WechatID" value="{{ info.WechatID }}" placeholder="WechatID" type="text">
+                                                                        </div>
+                                                                        <div class="6u$ 12u$(small)">
+                                                                            <input name="Email" id="Email" value="{{ info.Email }}" placeholder="Email" type="Email">
+                                                                        </div>
+                                                                        <div class="6u 12u$(small)">
+                                                                            <input name="Phone" id="Phone" value="{{ info.Phone }}" placeholder="Phone" type="text">
+                                                                        </div>
+                                                                        <div class="6u$ 12u$(small)">
+                                                                            <input name="Location" id="Location" value="{{ info.Location }}" placeholder="Location" type="text">
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                             <input type="button" value="隐藏" id="aClose{{ i }}" class="button small">
+                                                            <input type="submit" value="删除" form="form1" class="button small">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% set i++ %}
+                                        {% endfor %}
+                                    {% endwith %}
+									</tbody>
+								</table>
+                                <div class="pagination">
+                                            <span class="step-links">
+                                                {% if contacts.has_previous %}
+                                                    <a href="?page={{ contacts.previous_page_number }}" class="button small">上一页</a>
+                                                {% endif %}
+
+                                                <span class="current">
+                                                    Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+                                                </span>
+
+                                                {% if contacts.has_next %}
+                                                    <a href="?page={{ contacts.next_page_number }}" class="button small">下一页</a>
+                                                {% endif %}
+                                            </span>
+                                </div>
+							</div>
+						</section>
+				</div>
+			</section>
+
+			<footer id="footer">
+				<div class="container">
+					<div class="row">
+						<div class="8u 12u$(medium)">
+							<ul class="copyright">
+								<li>Untitled. All rights reserved.</li>
+								<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+								<li>Changed: <a href="https://github.com/TianHongTao">THT</a></li>
+								<li>Images: <a href="http://unsplash.com">Unsplash</a></li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<ul class="icons">
+								<li>
+									<a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+	</body>
+</html>

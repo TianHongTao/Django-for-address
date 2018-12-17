@@ -14,6 +14,7 @@ try:
 except Exception as e:
     print(e)
 
+# 分页器一页展示多少
 NUM = 3
 
 def index(request):
@@ -286,8 +287,6 @@ def modifyinfo(request):
 def delete(request):
     friendWechatID = request.POST['WechatID']
     myWechatID = request.session.get('WechatID')
-    # print(friendWechatID)
-    # print(myWechatID)
     try:
         friend_id = models.IdWechatid.objects.filter(wechatid=friendWechatID).first()
         my_id = models.IdWechatid.objects.filter(wechatid=myWechatID).first()

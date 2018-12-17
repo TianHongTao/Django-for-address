@@ -14,6 +14,8 @@ try:
 except Exception as e:
     print(e)
 
+NUM = 3
+
 def index(request):
     return render(request,"index.html")
 
@@ -28,7 +30,14 @@ def friend(request):
         cursor.execute("SELECT FRIENDID,REMARK FROM Address.RELATION WHERE MYID = %d"%(user_id.id))
         friendlist = cursor.fetchall()
         infos = []
-        for i in range(len(friendlist)):
+
+        if request.GET.get('page') == None:
+            i = 0
+        else:
+            i = (int(request.GET.get('page'))-1)*NUM
+            request.session["i"] = i
+
+        while(i - request.session.get('i') < NUM):
             cursor.execute("SELECT * FROM Address.USERINFO WHERE ID = %d" % (friendlist[i][0]))
             UserInfo = cursor.fetchone()
             cursor.execute(
@@ -54,8 +63,9 @@ def friend(request):
             info['Location'] = address
             info['signature'] = UserInfo[4]
             infos.append(info)
+            i+=1
 
-        p = Paginator(friendlist, 5,2)
+        p = Paginator(friendlist, NUM,2)
         page = request.GET.get('page')
         try:
             contacts = p.page(page)
@@ -109,7 +119,23 @@ def registe(request):
     Phone = int(request.POST['Phone'])
     Location = request.POST['Location']
     signature = request.POST['signature']
-    # print(Phone)
+    verification = [False,False,False]
+
+    for i in Password:
+        if(i>'1' and i<'9'):
+            verification[0] = True
+        elif(i>'a' and i<'z'):
+            verification[1] = True
+        elif(i>'A' and i<'Z'):
+            verification[2] = True
+
+    if False in verification:
+        messages.error(request, '密码请包含大小写英文字符以及数字', extra_tags='bg-warning text-warning')
+        return redirect('/index/')
+    elif len(Password) < 6:
+        messages.error(request, '密码请至少包含6个字符', extra_tags='bg-warning text-warning')
+        return redirect('/index/')
+
     try:
         Id_Wechatid = models.IdWechatid(wechatid=WechatID)
         Id_Wechatid.save()
@@ -118,8 +144,10 @@ def registe(request):
         now_location_id = None
         parent_id = 1
         for location in location_list:
-            Id_Location = models.Location(location=location, parent_id=parent_id)
-            Id_Location.save()
+            Id_Location = models.Location.get(location=location, parent_id=parent_id)
+            if not Id_Location:
+                Id_Location = models.Location(location=location, parent_id=parent_id)
+                Id_Location.save()
             parent_id = Id_Location.id
             now_location_id = Id_Location.id
         cursor.execute("INSERT INTO ID_LOCATION(ID,LOCATION_ID) VALUES (%d,%d)"%(int(now_id),int(now_location_id)))
@@ -143,6 +171,7 @@ def login(request):
             request.session['is_login'] = True
             request.session['WechatID'] = user_id.wechatid
             request.session['Password'] = user.password
+            request.session["i"] = 0
             return redirect('/friend/')
         else:
             messages.error(request, '帐号/密码有误', extra_tags='bg-warning text-warning')
@@ -221,6 +250,7 @@ def modifyinfo(request):
     Phone = int(request.POST['Phone'])
     Location = request.POST['Location']
     signature = request.POST['signature']
+    PastPassword = request.POST['PastPassword']
     Me = models.IdWechatid.objects.filter(wechatid=WechatID).first()
     context = {
         'WechatID':WechatID,
@@ -231,6 +261,14 @@ def modifyinfo(request):
         'Location' : Location,
         'signature' : signature,
     }
+    try:
+        cursor.execute("SELECT PASSWORD FROM Address.USERINFO WHERE ID = %d" % (Me.id))
+        pastpassword = cursor.fetchone()
+        if PastPassword != pastpassword[0]:
+            messages.error(request, '旧密码输入错误', extra_tags='bg-warning text-warning')
+            return redirect('/friend/')
+    except Exception as e:
+        print(e)
     location_list = Location.split()
     try:
         cursor.execute("SELECT ID FROM LOCATION WHERE LOCATION = \"%s\""%(location_list[-1]))

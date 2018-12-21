@@ -1,0 +1,84 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="UTF-8">
+		<title>群聊创建</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/skel.min.js' %}"></script>
+		<script src="{% static 'js/skel-layers.min.js' %}"></script>
+		<script src="{% static 'js/init.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+		<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
+</head>
+<body>
+        <!-- 用户注册 -->
+            <a name="registe"></a>
+			<section id="two" class="wrapper style3 special">
+				<div class="container">
+					<header class="major">
+						<h2>群聊注册</h2>
+						<p>请如实填写以下信息,以便于我们了解更多</p>
+					</header>
+				</div>
+				<div class="container 50%">
+					<form action="regGroup" method="post">
+                        {% csrf_token %}
+						<div class="row uniform">
+							<div class="12u">
+								<input name="Name" id="Name" value="" placeholder="Name (required)" type="text">
+							</div>
+							<div class="12u">
+								<input name="FriendID" id="FriendID" value="" placeholder="FriendID" type="text">
+							</div>
+							<div class="12u$">
+								<textarea name="INFO" id="INFO" placeholder="INFO" rows="6"></textarea>
+							</div>
+							<div class="12u$">
+								<ul class="actions">
+									<li><input value="确定注册" class="special big" type="submit"></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<div class="row">
+						<div class="8u 12u$(medium)">
+							<ul class="copyright">
+								<li>Untitled. All rights reserved.</li>
+								<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+								<li>Changed: <a href="https://github.com/TianHongTao">THT</a></li>
+								<li>Images: <a href="https://tuchong.com/2850279/">THT</a></li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<ul class="icons">
+								<li>
+									<a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+</body>
+</html>

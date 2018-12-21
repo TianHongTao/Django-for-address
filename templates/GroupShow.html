@@ -8,7 +8,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>好友信息展示</title>
+		<title>群聊</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -94,14 +94,17 @@
     {% endfor %}{% endif %}
 		<!-- Header -->
 			<header id="header">
-				<h1><a href="/friend/">Refresh</a></h1>
+				<h1><a href="/GroupShow/">Refresh</a></h1>
 				<nav id="nav">
 					<ul>
                         <li>
                             <a href="/myself/" class="">公众号</a>
                         </li>
 						<li>
-                            <a href="/GroupShow/" class="">群聊</a>
+                            <a href="/friend/" class="">好友列表</a>
+                        </li>
+						<li>
+                            <a href="/Group/" class="">创建群聊</a>
                         </li>
 						<li>
                             <a href="/myself/" class="">自我名片展示</a>
@@ -118,34 +121,35 @@
 				<div class="container">
 
 					<header class="major">
-						<h2>您添加了的好友</h2>
-						<p>您可以点击好友旁的戳一戳按钮来查看好友名片</p>
-                        <input type="button" value="好友搜索" id="btnShowDiv5" class="button big" />
+						<h2>您添加了的群聊</h2>
+						<p>您可以点击群聊旁的删除按钮来删除群聊</p>
+                        <input type="button" value="群聊搜索" id="btnShowDiv5" class="button big" />
                         <p></p>
                         <div id="racePop5" class="raceShow5">
-                            <form action="someone" method="post">
+                            <form action="GroupInfo" method="post">
                             {% csrf_token %}
                                 <div class="align-middle">
-                                        <input type="text" name="Wechat-ID" id="Wechat-ID" value="" placeholder="Wechat-ID">
+                                        <input type="text" name="GroupID" id="GroupID" value="" placeholder="GroupID">
                                 </div>
                                 <p></p>
                                 <input type="button" value="隐藏" id="aClose5" class="button">
                                 <input value="搜索" class="button" type="submit">
                             </form>
-                            <p>点击搜索按钮展示对方名片</p>
+                            <p>点击搜索按钮展示群聊名片</p>
                         </div>
 					</header>
 
 					<!-- Table -->
 						<section>
-							<h3>用户信息展示</h3>
+							<h3>群聊信息展示</h3>
 							<div class="table-wrapper">
 								<table>
 									<thead>
 										<tr>
-											<th>Remark</th>
-											<th>Personalized signature</th>
-											<th>Show</th>
+                                            <th>ID</th>
+											<th>GroupName</th>
+											<th>INFO</th>
+                                            <th>Is_Delete</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -153,36 +157,30 @@
                                     {% with i=0 %}
                                     {% set i = 0 %}
                                         {% for info in infos %}
+                                            <form action="Groupdel" method="post" id="form1">
+                                            {% csrf_token %}
                                             <tr>
-                                                <td>{{ info.Remark }}</td>
-                                                <td>{{ info.signature }}</td>
                                                 <td>
-                                                    <input type="button" value="戳一戳" id="btnShowDiv{{ i }}" class="button small" />
-                                                    <div id="racePop{{ i }}" class="raceShow{{ i }}">
-                                                        <div class="div" style="width: 100%; height: 100%; overflow-y: auto; ">
-                                                                <form action="delete" method="post" id="form1">
-                                                                    {% csrf_token %}
-                                                                    <div class="row uniform">
-                                                                        <div class="6u 12u$(small)">
-                                                                            <input name="WechatID" id="WechatID" value="{{ info.WechatID }}" placeholder="WechatID" type="text">
-                                                                        </div>
-                                                                        <div class="6u$ 12u$(small)">
-                                                                            <input name="Email" id="Email" value="{{ info.Email }}" placeholder="Email" type="Email">
-                                                                        </div>
-                                                                        <div class="6u 12u$(small)">
-                                                                            <input name="Phone" id="Phone" value="{{ info.Phone }}" placeholder="Phone" type="text">
-                                                                        </div>
-                                                                        <div class="6u$ 12u$(small)">
-                                                                            <input name="Location" id="Location" value="{{ info.Location }}" placeholder="Location" type="text">
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                             <input type="button" value="隐藏" id="aClose{{ i }}" class="button small">
-                                                            <input type="submit" value="删除" form="form1" class="button small">
-                                                        </div>
+                                                    <div class="6u 12u$(small)">
+                                                        <input name="GroupID" id="GroupID" value="{{ info.GroupID }}" placeholder="GroupID" type="text">
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <div class="6u 12u$(small)">
+                                                        <input name="GroupName" id="GroupName" value="{{ info.GroupName }}" placeholder="GroupName" type="text">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="6u$ 12u$(small)">
+                                                        <input name="INFO" id="INFO" value="{{ info.INFO }}" placeholder="INFO" type="text">
+                                                    </div>
+                                                </td>
+                                            </form>
+                                                <td>
+                                                    <input type="submit" value="删除" form="form1" class="button small">
+                                                </td>
                                             </tr>
+
                                             {% set i++ %}
                                         {% endfor %}
                                     {% endwith %}

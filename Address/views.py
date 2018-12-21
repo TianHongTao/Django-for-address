@@ -15,7 +15,7 @@ except Exception as e:
     print(e)
 
 # 分页器一页展示多少
-NUM = 3
+NUM = 2
 
 def index(request):
     return render(request,"index.html")
@@ -75,6 +75,7 @@ def friend(request):
         except EmptyPage:
             contacts = p.page(Paginator.num_pages)
         return render(request, "friend.html",{'contacts': contacts, 'infos' : infos})
+
 
 def myself(request):
     is_alive = request.session.get('is_login')
@@ -145,17 +146,16 @@ def registe(request):
         now_location_id = None
         parent_id = 1
         for location in location_list:
-            Id_Location = models.Location.get(location=location, parent_id=parent_id)
-            if not Id_Location:
-                Id_Location = models.Location(location=location, parent_id=parent_id)
-                Id_Location.save()
+            Id_Location = models.Location(location=location, parent_id=parent_id)
+            Id_Location.save()
             parent_id = Id_Location.id
             now_location_id = Id_Location.id
         cursor.execute("INSERT INTO ID_LOCATION(ID,LOCATION_ID) VALUES (%d,%d)"%(int(now_id),int(now_location_id)))
         db.commit()
-        cursor.execute("INSERT INTO USERINFO(ID,PHONE,PASSWORD,USERNAME,signature,email) VALUES (%d,%d,%s,\"%s\",\"%s\",\"%s\")"%(int(now_id), int(Phone), str(Password), str(Username), str(signature),str(Email)))
+        cursor.execute("INSERT INTO USERINFO(ID,PHONE,PASSWORD,USERNAME,signature,email) VALUES (%d,%d,\"%s\",\"%s\",\"%s\",\"%s\")"%(int(now_id), int(Phone), str(Password), str(Username), str(signature),str(Email)))
         db.commit()
     except Exception as e:
+        messages.error(request, str(e), extra_tags='bg-warning text-warning')
         print(e)
     return render(request, "index.html")
 
@@ -173,6 +173,8 @@ def login(request):
             request.session['WechatID'] = user_id.wechatid
             request.session['Password'] = user.password
             request.session["i"] = 0
+            if user_id.wechatid == 'Admin':
+                return redirect('/Myadmin/')
             return redirect('/friend/')
         else:
             messages.error(request, '帐号/密码有误', extra_tags='bg-warning text-warning')
@@ -298,3 +300,295 @@ def delete(request):
         return redirect('/friend/')
 
     return redirect('/friend/')
+
+
+def Myadmin(request):
+    is_alive = request.session.get('is_login')
+    if is_alive == None or is_alive == False:
+        messages.error(request, '用户未登录', extra_tags='bg-warning text-warning')
+        return redirect('/index/')
+    else:
+        WechatID = request.session.get('WechatID')
+        if WechatID != 'Admin':
+            messages.error(request, '管理员用户未登录', extra_tags='bg-warning text-warning')
+            return redirect('/index/')
+        try:
+            db = pymysql.connect(host='localhost', port=3306, user='root', passwd='root', db='Address',
+                                 charset="utf8")
+            cursor = db.cursor()
+        except Exception as e:
+            print(e)
+        cursor.execute("SELECT WECHATID FROM Address.ID_WECHATID WHERE WECHATID != 'Admin'")
+        userlist = cursor.fetchall()
+        infos = []
+
+        if request.GET.get('page') == None:
+            i = 0
+        else:
+            i = (int(request.GET.get('page')) - 1) * NUM
+            request.session["i"] = i
+
+        while (i - request.session.get('i') < NUM):
+            if i > len(userlist) or userlist[i] == None:
+                break
+            info = {}
+            info['WechatID'] = str(userlist[i]).replace('(\''," ").replace('\',)'," ")
+            infos.append(info)
+            i += 1
+
+        p = Paginator(userlist, NUM, 2)
+        page = request.GET.get('page')
+        try:
+            contacts = p.page(page)
+        except PageNotAnInteger:
+            contacts = p.page(1)
+        except EmptyPage:
+            contacts = p.page(Paginator.num_pages)
+        return render(request, "Admin.html", {'contacts': contacts, 'infos': infos})
+
+
+
+
+def Users(request):
+    wechatID = request.POST['WechatID']
+    if wechatID == 'Wechat-ID':
+        messages.error(request, '请输入有效字符', extra_tags='bg-warning text-warning')
+        return redirect('/friend/')
+    else:
+        try:
+            user_id = models.IdWechatid.objects.filter(wechatid=wechatID).first()
+            if user_id == None:
+                messages.error(request, 'WechatID不匹配', extra_tags='bg-warning text-warning')
+                return redirect('/friend/')
+            cursor.execute("SELECT * FROM USERINFO WHERE ID = %d" %(int(user_id.id)))
+            data = cursor.fetchone()
+            request.session['friendID'] = wechatID
+            cursor.execute("SELECT LOCATION.LOCATION,PARENT_ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (int(user_id.id)))
+            location = cursor.fetchone()
+            address = ""
+            # print(location)
+            while int(location[1]) != 1:
+                address = address+location[0]+" "
+                cursor.execute(
+                    "SELECT LOCATION.LOCATION,PARENT_ID FROM LOCATION WHERE LOCATION.ID = %d " % (
+                        int(location[1])))
+                location = cursor.fetchone()
+            address = address + location[0] + " "
+
+        except Exception as e:
+            print(e)
+        context = {
+            'WechatID': user_id.wechatid,
+            'Password': data[2],
+            'Username': data[3],
+            'Email': data[5],
+            'Phone': data[1],
+            'Location': address,
+            'signature': data[4],
+        }
+        return render(request, "Users.html",context)
+
+def modifyUser(request):
+    WechatID = request.POST['Wechat-ID']
+    Password = request.POST['Password']
+    Username = request.POST['Username']
+    Email = request.POST['Email']
+    Phone = int(request.POST['Phone'])
+    Location = request.POST['Location']
+    signature = request.POST['signature']
+    Me = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+    context = {
+        'WechatID':WechatID,
+        'Password' : Password,
+        'Username' : Username,
+        'Email' : Email,
+        'Phone' : Phone,
+        'Location' : Location,
+        'signature' : signature,
+    }
+    location_list = Location.split()
+    try:
+        db = pymysql.connect(host='localhost', port=3306, user='root', passwd='root', db='Address',
+                             charset="utf8")
+        cursor = db.cursor()
+    except Exception as e:
+        print(e)
+    try:
+        cursor.execute("SELECT ID FROM LOCATION WHERE LOCATION = \"%s\""%(location_list[-1]))
+        LocationID = cursor.fetchone()
+        cursor.execute("UPDATE ID_LOCATION SET LOCATION_ID = %d WHERE ID = %d"%(int(LocationID[0]),int(Me.id)))
+        cursor.execute("UPDATE USERINFO SET Address.USERINFO.PASSWORD = \"%s\", Address.USERINFO.USERNAME = \"%s\","
+                   "Address.USERINFO.email = \"%s\", Address.USERINFO.PHONE = %d, Address.USERINFO.signature = \"%s\" "
+                   "WHERE Address.USERINFO.ID = %d" % (Password,Username,Email,int(Phone),signature,int(Me.id)))
+        db.commit()
+    except Exception as e:
+        print(e)
+    return render(request, "Users.html", context)
+
+
+def delUser(request):
+    WechatID = request.POST['Wechat-ID']
+    now = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+    cursor.execute("DELETE FROM Address.USERINFO WHERE Address.USERINFO.ID = %d"%(int(now.id)))
+    cursor.execute("DELETE FROM Address.ID_WECHATID WHERE Address.ID_WECHATID.WECHATID = \"%s\""%(WechatID))
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
+    db.commit()
+    return redirect("/Myadmin/")
+
+
+def GroupShow(request):
+    is_alive = request.session.get('is_login')
+    if is_alive == None or is_alive == False:
+        messages.error(request, '用户未登录', extra_tags='bg-warning text-warning')
+        return redirect('/index/')
+    else:
+        WechatID = request.session.get('WechatID')
+        user_id = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+        cursor.execute("SELECT Group_ID FROM Address.Group_Relation WHERE User_ID = %d" % (user_id.id))
+        GROUPIDS = cursor.fetchall()
+        infos = []
+        NUM1 = len(GROUPIDS)
+        if request.GET.get('page') == None:
+            i = 0
+        else:
+            i = (int(request.GET.get('page')) - 1) * NUM1
+            request.session["i"] = i
+
+        while (i - request.session.get('i') < NUM1):
+            if i >= len(GROUPIDS):
+                break
+            cursor.execute("SELECT ID,NAME,INFO FROM Address.group WHERE ID = %d"%(int(GROUPIDS[i][0])))
+            groupinfo = cursor.fetchone()
+            info = {}
+            # print(groupinfo[0])
+            info["GroupID"] = groupinfo[0]
+            info['GroupName'] = groupinfo[1]
+            info['INFO'] = groupinfo[2]
+            infos.append(info)
+            i += 1
+
+        p = Paginator(GROUPIDS, NUM1, 2)
+        page = request.GET.get('page')
+        try:
+            contacts = p.page(page)
+        except PageNotAnInteger:
+            contacts = p.page(1)
+        except EmptyPage:
+            contacts = p.page(Paginator.num_pages)
+        return render(request, "GroupShow.html", {'contacts': contacts, 'infos': infos})
+
+
+def Groupdelete(request):
+    WechatID = request.session.get('WechatID')
+    now = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+    GroupID = request.POST["GroupID"]
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+    cursor.execute("DELETE FROM Address.Group_Relation WHERE User_ID = %d and Group_ID = %d"%(int(now.id),int(GroupID)))
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
+    db.commit()
+    return redirect("/GroupShow/")
+
+def GroupInfo(request):
+    GroupID = request.POST['GroupID']
+    is_alive = request.session.get('is_login')
+    if is_alive == None or is_alive == False:
+        messages.error(request, '用户未登录', extra_tags='bg-warning text-warning')
+        return redirect('/index/')
+    else:
+        cursor.execute("SELECT NAME,INFO,ID FROM Address.group WHERE ID = %d"%(int(GroupID)))
+        GroupInfo = cursor.fetchone()
+        cursor.execute("SELECT User_ID FROM Group_Relation WHERE Group_ID = %d"%(int(GroupID)))
+        GroupPerson = cursor.fetchall()
+        friendlist = GroupPerson
+        infos = []
+
+        if request.GET.get('page') == None:
+            i = 0
+        else:
+            i = (int(request.GET.get('page'))-1)*NUM
+            request.session["i"] = i
+
+        while(i - request.session.get('i') < NUM):
+            if i >= len(friendlist):
+                break
+            cursor.execute("SELECT * FROM Address.USERINFO WHERE ID = %d" % (friendlist[i][0]))
+            UserInfo = cursor.fetchone()
+            cursor.execute(
+                "SELECT LOCATION.LOCATION,PARENT_ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (
+                    int(friendlist[i][0])))
+            location = cursor.fetchone()
+            print(location)
+            if location == None:
+                break
+            address = ""
+            while int(location[1]) != 1:
+                address = address + location[0] + " "
+                cursor.execute(
+                    "SELECT LOCATION.LOCATION,PARENT_ID FROM LOCATION WHERE LOCATION.ID = %d " % (
+                        int(location[1])))
+                location = cursor.fetchone()
+            address = address + location[0] + " "
+            cursor.execute("SELECT USERNAME FROM Address.USERINFO WHERE ID = %d"%(friendlist[i][0]))
+            remark = cursor.fetchone()
+            cursor.execute("SELECT WECHATID FROM Address.ID_WECHATID WHERE ID = %d" % (friendlist[i][0]))
+            WechatID = cursor.fetchone()
+            info = {}
+            info['WechatID'] = WechatID[0]
+            info['Remark'] = remark[0]
+            info['Email'] = UserInfo[5]
+            info['Phone'] = UserInfo[1]
+            info['Location'] = address
+            info['signature'] = UserInfo[4]
+            infos.append(info)
+            i+=1
+
+        p = Paginator(GroupPerson, NUM,2)
+        page = request.GET.get('page')
+        try:
+            contacts = p.page(page)
+        except PageNotAnInteger:
+            contacts = p.page(1)
+        except EmptyPage:
+            contacts = p.page(Paginator.num_pages)
+        return render(request, "GroupInfo.html",{'contacts': contacts, 'infos' : infos,"GroupID":GroupInfo[2],"GroupName":GroupInfo[0],"INFO":GroupInfo[1]})
+
+def addGroup(request):
+    GroupID = request.POST['GroupID']
+    WechatID = request.session.get('WechatID')
+    now = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+    cursor.execute("INSERT INTO Group_Relation(User_ID, Group_ID) VALUES (%d,%d)"%(int(now.id),int(GroupID)))
+    db.commit()
+    return redirect("/GroupShow/")
+
+def regGroup(request):
+    Name = request.POST['Name']
+    INFO = request.POST['INFO']
+    FriendID = request.POST['FriendID']
+    FriendID_list = FriendID.split(",")
+    WechatID = request.session.get('WechatID')
+    try:
+        Id_Wechatid = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+        cursor.execute("INSERT INTO Address.group(NAME,INFO) VALUES (\"%s\",\"%s\")"%(str(Name),str(INFO)))
+        db.commit()
+        cursor.execute("SELECT ID FROM Address.group WHERE NAME = \"%s\" and INFO = \"%s\""%(str(Name),str(INFO)))
+        id = cursor.fetchone()
+        cursor.execute("INSERT INTO Group_Relation(User_ID,Group_ID) VALUES (%d,%d)"%(int(Id_Wechatid.id), int(id[0])))
+        db.commit()
+        for i in FriendID_list:
+            cursor.execute(
+                "INSERT INTO Group_Relation(User_ID,Group_ID) VALUES (%d,%d)" % (int(i), int(id[0])))
+            db.commit()
+            print("INSERT INTO Group_Relation(User_ID,Group_ID) VALUES (%d,%d)" % (int(i), int(id[0])))
+    except Exception as e:
+        messages.error(request, str(e), extra_tags='bg-warning text-warning')
+        print(e)
+    return redirect("/GroupShow/")
+
+def Group(request):
+    return render(request,"Group.html")
+
+def OfficialAccountShow(request):
+    pass
+
+

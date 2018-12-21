@@ -8,7 +8,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>好友信息展示</title>
+		<title>管理员</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -97,12 +97,6 @@
 				<h1><a href="/friend/">Refresh</a></h1>
 				<nav id="nav">
 					<ul>
-                        <li>
-                            <a href="/myself/" class="">公众号</a>
-                        </li>
-						<li>
-                            <a href="/GroupShow/" class="">群聊</a>
-                        </li>
 						<li>
                             <a href="/myself/" class="">自我名片展示</a>
                         </li>
@@ -118,15 +112,15 @@
 				<div class="container">
 
 					<header class="major">
-						<h2>您添加了的好友</h2>
-						<p>您可以点击好友旁的戳一戳按钮来查看好友名片</p>
-                        <input type="button" value="好友搜索" id="btnShowDiv5" class="button big" />
+						<h2>注册了的用户</h2>
+						<p>您可以通过用户的WECHATID查看他们的信息</p>
+                        <input type="button" value="用户搜索" id="btnShowDiv5" class="button big" />
                         <p></p>
                         <div id="racePop5" class="raceShow5">
-                            <form action="someone" method="post">
+                            <form action="Users" method="post">
                             {% csrf_token %}
                                 <div class="align-middle">
-                                        <input type="text" name="Wechat-ID" id="Wechat-ID" value="" placeholder="Wechat-ID">
+                                        <input type="text" name="WechatID" id="WechatID" value="" placeholder="WechatID">
                                 </div>
                                 <p></p>
                                 <input type="button" value="隐藏" id="aClose5" class="button">
@@ -143,9 +137,7 @@
 								<table>
 									<thead>
 										<tr>
-											<th>Remark</th>
-											<th>Personalized signature</th>
-											<th>Show</th>
+											<th>WECHAT_ID</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -154,34 +146,7 @@
                                     {% set i = 0 %}
                                         {% for info in infos %}
                                             <tr>
-                                                <td>{{ info.Remark }}</td>
-                                                <td>{{ info.signature }}</td>
-                                                <td>
-                                                    <input type="button" value="戳一戳" id="btnShowDiv{{ i }}" class="button small" />
-                                                    <div id="racePop{{ i }}" class="raceShow{{ i }}">
-                                                        <div class="div" style="width: 100%; height: 100%; overflow-y: auto; ">
-                                                                <form action="delete" method="post" id="form1">
-                                                                    {% csrf_token %}
-                                                                    <div class="row uniform">
-                                                                        <div class="6u 12u$(small)">
-                                                                            <input name="WechatID" id="WechatID" value="{{ info.WechatID }}" placeholder="WechatID" type="text">
-                                                                        </div>
-                                                                        <div class="6u$ 12u$(small)">
-                                                                            <input name="Email" id="Email" value="{{ info.Email }}" placeholder="Email" type="Email">
-                                                                        </div>
-                                                                        <div class="6u 12u$(small)">
-                                                                            <input name="Phone" id="Phone" value="{{ info.Phone }}" placeholder="Phone" type="text">
-                                                                        </div>
-                                                                        <div class="6u$ 12u$(small)">
-                                                                            <input name="Location" id="Location" value="{{ info.Location }}" placeholder="Location" type="text">
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                             <input type="button" value="隐藏" id="aClose{{ i }}" class="button small">
-                                                            <input type="submit" value="删除" form="form1" class="button small">
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <td>{{ info.WechatID }}</td>
                                             </tr>
                                             {% set i++ %}
                                         {% endfor %}

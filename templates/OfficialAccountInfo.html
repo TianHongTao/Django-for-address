@@ -117,24 +117,30 @@
 				<div class="container">
 
 					<header class="major">
-						<h2>当前群聊展示</h2>
-						<p>您可以点击群成员旁的戳一戳按钮来查看群成员名片</p>
+						<h2>当前公众号展示</h2>
+						<p>您可以点击公众号文章旁的戳一戳按钮来查看公众号文章信息</p>
                    </header>
 
 					<!-- Form -->
 						<section>
                         <div class="container 50%">
-                                <form action="addGroup" method="post">
+                                <form action="addOff" method="post">
                                     {% csrf_token %}
                                     <div class="row uniform">
                                         <div class="6u 12u$(small)">
-                                            <input style="text-align: center" name="GroupID" id="GroupID" value="{{GroupID}}" placeholder="GroupID" type="text">
+                                            <input style="text-align: center" name="ID" id="ID" value="ID：{{ID}}" placeholder="ID" type="text">
                                         </div>
                                         <div class="6u$ 12u$(small)">
-                                            <input style="text-align: center" name="GroupName" id="GroupName" value="{{GroupName}}" placeholder="GroupName" type="text">
+                                            <input style="text-align: center" name="Name" id="Name" value="名字：{{Name}}" placeholder="Name" type="text">
+                                        </div>
+                                        <div class="6u 12u$(small)">
+                                            <input style="text-align: center" name="MAINBODY" id="MAINBODY" value="主体：{{MAINBODY}}" placeholder="MAINBODY" type="text">
+                                        </div>
+                                        <div class="6u$ 12u$(small)">
+                                            <input style="text-align: center" name="Nums" id="Nums" value="关注人数：{{Nums}}" placeholder="Nums" type="text">
                                         </div>
                                         <div class="12u$">
-                                            <textarea name="INFO" id="INFO" placeholder="{{ INFO }}" rows="6"></textarea>
+                                            <textarea name="INFO" id="INFO" placeholder="简介：{{ INFO }}" rows="6"></textarea>
                                         </div>
                                         <div class="12u$">
                                             <div class="align-center">
@@ -153,14 +159,13 @@
 
 
             <section>
-                <h3>群成员展示</h3>
+                <h3>文章展示</h3>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>Remark</th>
-                                <th>Personalized signature</th>
-                                <th>Show</th>
+                                <th>Name</th>
+                                <th>Info</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -169,34 +174,8 @@
                         {% set i = 0 %}
                             {% for info in infos %}
                                 <tr>
-                                    <td>{{ info.Remark }}</td>
-                                    <td>{{ info.signature }}</td>
-                                    <td>
-                                        <input type="button" value="戳一戳" id="btnShowDiv{{ i }}" class="button small" />
-                                        <div id="racePop{{ i }}" class="raceShow{{ i }}">
-                                            <div class="div" style="width: 100%; height: 100%; overflow-y: auto; ">
-                                                    <form action="delete" method="post" id="form1">
-                                                        {% csrf_token %}
-                                                        <div class="row uniform">
-                                                            <div class="6u 12u$(small)">
-                                                                <input name="WechatID" id="WechatID" value="{{ info.WechatID }}" placeholder="WechatID" type="text">
-                                                            </div>
-                                                            <div class="6u$ 12u$(small)">
-                                                                <input name="Email" id="Email" value="{{ info.Email }}" placeholder="Email" type="Email">
-                                                            </div>
-                                                            <div class="6u 12u$(small)">
-                                                                <input name="Phone" id="Phone" value="{{ info.Phone }}" placeholder="Phone" type="text">
-                                                            </div>
-                                                            <div class="6u$ 12u$(small)">
-                                                                <input name="Location" id="Location" value="{{ info.Location }}" placeholder="Location" type="text">
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                 <input type="button" value="隐藏" id="aClose{{ i }}" class="button small">
-                                                <input type="submit" value="删除" form="form1" class="button small">
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td>{{ info.Name }}</td>
+                                    <td>{{ info.Info }}</td>
                                 </tr>
                                 {% set i++ %}
                             {% endfor %}

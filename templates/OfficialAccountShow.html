@@ -94,14 +94,17 @@
     {% endfor %}{% endif %}
 		<!-- Header -->
 			<header id="header">
-				<h1><a href="/friend/">Refresh</a></h1>
+				<h1><a href="/OfficialAccountShow/">Refresh</a></h1>
 				<nav id="nav">
 					<ul>
                         <li>
-                            <a href="/myself/" class="">公众号</a>
+                            <a href="/friend/" class="">好友列表</a>
+                        </li>
+                        <li>
+                            <a href="/OffAccount/" class="">创建公众号</a>
                         </li>
 						<li>
-                            <a href="/index/" class="">群聊</a>
+                            <a href="/GroupShow/" class="">群聊</a>
                         </li>
 						<li>
                             <a href="/myself/" class="">自我名片展示</a>
@@ -118,21 +121,21 @@
 				<div class="container">
 
 					<header class="major">
-						<h2>您添加了的群聊</h2>
-						<p>您可以点击群聊旁的戳一戳按钮来查看群聊名片</p>
-                        <input type="button" value="群聊搜索" id="btnShowDiv5" class="button big" />
+						<h2>您关注了的公众号</h2>
+						<p>您可以点击公众号旁的按钮取消关注公众号</p>
+                        <input type="button" value="公众号搜索" id="btnShowDiv5" class="button big" />
                         <p></p>
                         <div id="racePop5" class="raceShow5">
-                            <form action="someone" method="post">
+                            <form action="OffInfo" method="post">
                             {% csrf_token %}
                                 <div class="align-middle">
-                                        <input type="text" name="Wechat-ID" id="Wechat-ID" value="" placeholder="Wechat-ID">
+                                        <input type="text" name="Name" id="Name" value="" placeholder="Name">
                                 </div>
                                 <p></p>
                                 <input type="button" value="隐藏" id="aClose5" class="button">
                                 <input value="搜索" class="button" type="submit">
                             </form>
-                            <p>点击搜索按钮展示群聊名片</p>
+                            <p>点击搜索按钮展示公众号名片</p>
                         </div>
 					</header>
 
@@ -143,8 +146,10 @@
 								<table>
 									<thead>
 										<tr>
-											<th>GroupName</th>
+                                            <th>ID</th>
+											<th>Name</th>
 											<th>INFO</th>
+                                            <th>MAINBODY</th>
                                             <th>Is_Delete</th>
 										</tr>
 									</thead>
@@ -153,20 +158,33 @@
                                     {% with i=0 %}
                                     {% set i = 0 %}
                                         {% for info in infos %}
-                                            <form action="" method="post" id="form1">
+                                            <form action="Offdel" method="post">
+                                            {% csrf_token %}
                                             <tr>
                                                 <td>
                                                     <div class="6u 12u$(small)">
-                                                        <input name="GroupName" id="GroupName" value="{{ info.GroupName }}" placeholder="GroupName" type="text">
+                                                        <input name="ID" id="ID" value="{{ info.ID }}" placeholder="ID" type="text">
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="6u$ 12u$(small)">
+                                                        <input name="Name" id="Name" value="{{ info.Name }}" placeholder="Name" type="text">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="6u 12u$(small)">
                                                         <input name="INFO" id="INFO" value="{{ info.INFO }}" placeholder="INFO" type="text">
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <input type="submit" value="删除" form="form1" class="button small">
+                                                    <div class="6u$ 12u$(small)">
+                                                        <input name="MAINBODY" id="MAINBODY" value="{{ info.MAINBODY }}" placeholder="MAINBODY" type="text">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="6u$ 12u$(small)">
+                                                        <input type="submit" value="取消关注" class="button small">
+                                                    </div>
                                                 </td>
                                             </tr>
                                             </form>

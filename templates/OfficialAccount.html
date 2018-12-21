@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 		<meta charset="UTF-8">
-		<title>群聊创建</title>
+		<title>公众号创建</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -19,7 +19,7 @@
 <body>
 <!-- Header -->
 			<header id="header">
-				<h1><a href="/Group/">Refresh</a></h1>
+				<h1><a href="/OfficialAccountShow/">Refresh</a></h1>
 				<nav id="nav">
 					<ul>
                         <li>
@@ -37,24 +37,28 @@
 					</ul>
 				</nav>
             </header>
-        <!-- 群聊注册 -->
+        <!-- 公众号创建 -->
             <a name="registe"></a>
-			<section id="two" class="wrapper style3 special">
+			<section id="two" class="wrapper style3 special" style="background-color: slateblue">
 				<div class="container">
 					<header class="major">
-						<h2>群聊注册</h2>
+						<h2>公众号创建</h2>
 						<p>请如实填写以下信息,以便于我们了解更多</p>
 					</header>
 				</div>
 				<div class="container 50%">
-					<form action="regGroup" method="post">
+					<form action="regOff" method="post">
                         {% csrf_token %}
 						<div class="row uniform">
 							<div class="12u">
 								<input name="Name" id="Name" value="" placeholder="Name (required)" type="text">
 							</div>
-							<div class="12u">
-								<input name="FriendID" id="FriendID" value="" placeholder="FriendID" type="text">
+							<div class="12u$">
+                                <select name="MAINBODY" id="MAINBODY">
+                                  <option value="个人">个人</option>
+                                  <option value="企业">企业</option>
+                                  <option value="营销">营销</option>
+                                </select>
 							</div>
 							<div class="12u$">
 								<textarea name="INFO" id="INFO" placeholder="INFO" rows="6"></textarea>

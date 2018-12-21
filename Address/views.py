@@ -32,19 +32,26 @@ def friend(request):
         friendlist = cursor.fetchall()
         infos = []
 
+        NUM1 = len(friendlist)
+        if NUM1 == 0:
+            NUM1 = NUM
         if request.GET.get('page') == None:
             i = 0
         else:
-            i = (int(request.GET.get('page'))-1)*NUM
+            i = (int(request.GET.get('page'))-1)*NUM1
             request.session["i"] = i
 
-        while(i - request.session.get('i') < NUM):
+        while(i - request.session.get('i') < NUM1):
+            if i >= len(friendlist):
+                break;
             cursor.execute("SELECT * FROM Address.USERINFO WHERE ID = %d" % (friendlist[i][0]))
             UserInfo = cursor.fetchone()
             cursor.execute(
                 "SELECT LOCATION.LOCATION,PARENT_ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (
                     int(friendlist[i][0])))
             location = cursor.fetchone()
+            if location == None:
+                break
             address = ""
             while int(location[1]) != 1:
                 address = address + location[0] + " "
@@ -66,7 +73,7 @@ def friend(request):
             infos.append(info)
             i+=1
 
-        p = Paginator(friendlist, NUM,2)
+        p = Paginator(friendlist, NUM1,2)
         page = request.GET.get('page')
         try:
             contacts = p.page(page)
@@ -449,6 +456,9 @@ def GroupShow(request):
         GROUPIDS = cursor.fetchall()
         infos = []
         NUM1 = len(GROUPIDS)
+        if NUM1 == 0:
+            NUM1 = NUM
+
         if request.GET.get('page') == None:
             i = 0
         else:
@@ -468,7 +478,7 @@ def GroupShow(request):
             infos.append(info)
             i += 1
 
-        p = Paginator(GROUPIDS, NUM1, 2)
+        p = Paginator(GROUPIDS, NUM1 , 2)
         page = request.GET.get('page')
         try:
             contacts = p.page(page)
@@ -589,6 +599,141 @@ def Group(request):
     return render(request,"Group.html")
 
 def OfficialAccountShow(request):
-    pass
+    is_alive = request.session.get('is_login')
+    if is_alive == None or is_alive == False:
+        messages.error(request, '用户未登录', extra_tags='bg-warning text-warning')
+        return redirect('/index/')
+    else:
+        WechatID = request.session.get('WechatID')
+        Id_Wechatid = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+        cursor.execute("SELECT Off_ID FROM OfficialAccount_Relation WHERE User_ID = %d" % (int(Id_Wechatid.id)))
+        Off_IDS = cursor.fetchall()
+        infos = []
+        NUM1 = len(Off_IDS)
+        if NUM1 == 0:
+            NUM1 = NUM
+        if request.GET.get('page') == None:
+            i = 0
+        else:
+            i = (int(request.GET.get('page')) - 1) * NUM1
+            request.session["i"] = i
 
+        while (i - request.session.get('i') < NUM1):
+            if i >= len(Off_IDS):
+                break
+            cursor.execute("SELECT * FROM Address.OfficialAccount WHERE ID = %d" % (int(Off_IDS[i][0])))
+            groupinfo = cursor.fetchone()
+            info = {}
+            # print(groupinfo[0])
+            info["ID"] = groupinfo[0]
+            info['Name'] = groupinfo[1]
+            info['INFO'] = groupinfo[2]
+            info['MAINBODY'] = groupinfo[3]
+            infos.append(info)
+            i += 1
+
+        p = Paginator(Off_IDS, NUM1, 2)
+        page = request.GET.get('page')
+        if page == None:
+            page = 1
+        try:
+            contacts = p.page(page)
+        except PageNotAnInteger:
+            contacts = p.page(1)
+        except EmptyPage:
+            contacts = p.page(Paginator.num_pages)
+        return render(request, "OfficialAccountShow.html", {'contacts': contacts, 'infos': infos})
+
+def OffInfo(request):
+    print("OfficialAccountInfo")
+    OfficialAccountName = request.POST['Name']
+    is_alive = request.session.get('is_login')
+    if is_alive == None or is_alive == False:
+        messages.error(request, '用户未登录', extra_tags='bg-warning text-warning')
+        return redirect('/index/')
+    else:
+        cursor.execute("SELECT * FROM Address.OfficialAccount WHERE NAME = \"%s\""%(str(OfficialAccountName)))
+        OfficialAccountINFO = cursor.fetchone()
+        cursor.execute("SELECT * FROM Address.OfficialAccount_Relation WHERE Off_ID = %d"%(int(OfficialAccountINFO[0])))
+        OfficialAccountRelations = cursor.fetchall()
+        nums = len(OfficialAccountRelations)
+        cursor.execute("SELECT * FROM OfficialAccount_Word WHERE Off_ID = %d"%(int(OfficialAccountINFO[0])))
+        OfficialAccountWords = cursor.fetchall()
+        infos = []
+        NUM1 = len(OfficialAccountWords)
+        if NUM1 == 0:
+            NUM1 = NUM
+
+        if request.GET.get('page') == None:
+            i = 0
+        else:
+            i = (int(request.GET.get('page'))-1)*NUM1
+            request.session["i"] = i
+
+        while(i - request.session.get('i') < NUM1):
+            if i >= len(OfficialAccountWords):
+                break
+            cursor.execute("SELECT * FROM Address.Word WHERE ID = %d"%(int(OfficialAccountWords[i][1])))
+            Wordinfo = cursor.fetchone()
+            info = {}
+            info["Info"] = Wordinfo[1]
+            info["Name"] = Wordinfo[2]
+            infos.append(info)
+            i+=1
+
+        p = Paginator(OfficialAccountWords, NUM1,2)
+        page = request.GET.get('page')
+        try:
+            contacts = p.page(page)
+        except PageNotAnInteger:
+            contacts = p.page(1)
+        except EmptyPage:
+            contacts = p.page(Paginator.num_pages)
+        return render(request, "OfficialAccountInfo.html",{'contacts': contacts, 'infos' : infos,
+                                                 "ID": OfficialAccountINFO[0],"Name":OfficialAccountINFO[1],
+                                                "MAINBODY":OfficialAccountINFO[3],"Nums":nums, "INFO":OfficialAccountINFO[2]})
+
+def addOff(request):
+    OfficialAccountID = request.POST['ID']
+    WechatID = request.session.get('WechatID')
+    now = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+    OfficialAccountID  = OfficialAccountID[3]
+    cursor.execute("INSERT INTO OfficialAccount_Relation(User_ID, Off_ID) VALUES (%d,%d)"%(int(now.id),int(OfficialAccountID)))
+    db.commit()
+    return redirect("/OfficialAccountShow/")
+
+def regOff(request):
+    Name = request.POST['Name']
+    INFO = request.POST['INFO']
+    MAINBODY = request.POST['MAINBODY']
+    WechatID = request.session.get('WechatID')
+    try:
+        Id_Wechatid = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+        cursor.execute("INSERT INTO OfficialAccount(NAME, INFO, MAINBODY) VALUES(\"%s\",\"%s\",\"%s\")"%(str(Name),str(INFO),str(MAINBODY)))
+        db.commit()
+        cursor.execute("SELECT ID FROM OfficialAccount WHERE NAME = \"%s\"" % (str(Name)))
+        id = cursor.fetchone()
+        cursor.execute(
+            "INSERT INTO OfficialAccount_Relation(User_ID,Off_ID) VALUES (%d,%d)" % (int(Id_Wechatid.id), int(id[0])))
+        db.commit()
+    except Exception as e:
+        messages.error(request, str(e), extra_tags='bg-warning text-warning')
+        print(e)
+    return redirect("/OfficialAccountShow/")
+
+def Offdel(request):
+    WechatID = request.session.get('WechatID')
+    now = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+    OfficialAccountID = request.POST["ID"]
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+    cursor.execute("DELETE FROM Address.OfficialAccount_Relation WHERE User_ID = %d and Off_ID = %d"%(int(now.id),int(OfficialAccountID)))
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
+    db.commit()
+    return redirect("/OfficialAccountShow/")
+
+def Group(request):
+    return render(request,"Group.html")
+
+def OffAccount(request):
+    return render(request,"OfficialAccount.html")
 

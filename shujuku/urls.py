@@ -41,4 +41,9 @@ urlpatterns = [
     url('addGroup',views.addGroup,name='addGroup'),
     url('regGroup',views.regGroup,name='regGroup'),
     url("Group",views.Group,name='Group'),
+    url('Offdel',views.Offdel,name="Offdel"),
+    url("OffInfo", views.OffInfo, name="OffInfo"),
+    url("addOff", views.addOff, name="addOff"),
+    url('regOff', views.regOff, name='regOff'),
+    url("OffAccount",views.OffAccount,name="OffAccount"),
 ]

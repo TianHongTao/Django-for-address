@@ -98,7 +98,7 @@
 				<nav id="nav">
 					<ul>
                         <li>
-                            <a href="/myself/" class="">公众号</a>
+                            <a href="/OfficialAccountShow/" class="">公众号</a>
                         </li>
 						<li>
                             <a href="/friend/" class="">好友列表</a>
@@ -157,7 +157,7 @@
                                     {% with i=0 %}
                                     {% set i = 0 %}
                                         {% for info in infos %}
-                                            <form action="Groupdel" method="post" id="form1">
+                                            <form action="Groupdel" method="post">
                                             {% csrf_token %}
                                             <tr>
                                                 <td>
@@ -175,10 +175,10 @@
                                                         <input name="INFO" id="INFO" value="{{ info.INFO }}" placeholder="INFO" type="text">
                                                     </div>
                                                 </td>
-                                            </form>
                                                 <td>
-                                                    <input type="submit" value="删除" form="form1" class="button small">
+                                                    <input type="submit" value="删除" class="button small">
                                                 </td>
+                                            </form>
                                             </tr>
 
                                             {% set i++ %}

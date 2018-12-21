@@ -98,7 +98,7 @@
 				<nav id="nav">
 					<ul>
                         <li>
-                            <a href="/myself/" class="">公众号</a>
+                            <a href="/OfficialAccountShow/" class="">公众号</a>
                         </li>
 						<li>
                             <a href="/GroupShow/" class="">群聊</a>
@@ -160,7 +160,7 @@
                                                     <input type="button" value="戳一戳" id="btnShowDiv{{ i }}" class="button small" />
                                                     <div id="racePop{{ i }}" class="raceShow{{ i }}">
                                                         <div class="div" style="width: 100%; height: 100%; overflow-y: auto; ">
-                                                                <form action="delete" method="post" id="form1">
+                                                                <form action="delete" method="post">
                                                                     {% csrf_token %}
                                                                     <div class="row uniform">
                                                                         <div class="6u 12u$(small)">
@@ -176,9 +176,9 @@
                                                                             <input name="Location" id="Location" value="{{ info.Location }}" placeholder="Location" type="text">
                                                                         </div>
                                                                     </div>
-                                                                </form>
                                                              <input type="button" value="隐藏" id="aClose{{ i }}" class="button small">
-                                                            <input type="submit" value="删除" form="form1" class="button small">
+                                                            <input type="submit" value="删除" class="button small">
+                                                                </form>
                                                         </div>
                                                     </div>
                                                 </td>

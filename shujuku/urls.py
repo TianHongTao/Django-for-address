@@ -45,5 +45,7 @@ urlpatterns = [
     url("OffInfo", views.OffInfo, name="OffInfo"),
     url("addOff", views.addOff, name="addOff"),
     url('regOff', views.regOff, name='regOff'),
+    url("Wordadd",views.Wordadd,name="Wordadd"),
+    url('regWord',views.regWord,name="regWord"),
     url("OffAccount",views.OffAccount,name="OffAccount"),
 ]

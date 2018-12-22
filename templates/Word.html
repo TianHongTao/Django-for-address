@@ -1,0 +1,102 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="UTF-8">
+		<title>公众号创建</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/skel.min.js' %}"></script>
+		<script src="{% static 'js/skel-layers.min.js' %}"></script>
+		<script src="{% static 'js/init.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+		<link rel="stylesheet" href="{% static 'css/style-xlarge.css' %}" />
+</head>
+<body>
+<!-- Header -->
+			<header id="header">
+				<h1><a href="/OfficialAccountShow/">Refresh</a></h1>
+				<nav id="nav">
+					<ul>
+                        <li>
+                            <a href="/OfficialAccountShow/" class="">公众号</a>
+                        </li>
+						<li>
+                            <a href="/GroupShow/" class="">群聊</a>
+                        </li>
+						<li>
+                            <a href="/myself/" class="">自我名片展示</a>
+                        </li>
+						<li>
+                            <a href="/index/" class="button special ">返回登录页面</a>
+                        </li>
+					</ul>
+				</nav>
+            </header>
+        <!-- 公众号创建 -->
+            <a name="registe"></a>
+			<section id="two" class="wrapper style3 special" style="background-color:slategray">
+				<div class="container">
+					<header class="major">
+						<h2>公众号文章投稿</h2>
+                        <p>请填写下列表单进行投稿</p>
+                        <p><strong>注：投稿后您将自动关注本公众号</strong></p>
+					</header>
+				</div>
+				<div class="container 50%">
+					<form action="/regWord/" method="post">
+                        {% csrf_token %}
+						<div class="row uniform">
+							<div class="12u">
+								<input name="Name" id="Name" value="" placeholder="Name (required)" type="text">
+							</div>
+							<div class="12u$">
+								<textarea name="INFO" id="INFO" placeholder="INFO" rows="15"></textarea>
+							</div>
+							<div class="12u$">
+								<ul class="actions">
+									<li><input value="确定投稿" class="special big" type="submit"></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<div class="row">
+						<div class="8u 12u$(medium)">
+							<ul class="copyright">
+								<li>Untitled. All rights reserved.</li>
+								<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+								<li>Changed: <a href="https://github.com/TianHongTao">THT</a></li>
+								<li>Images: <a href="https://tuchong.com/2850279/">THT</a></li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<ul class="icons">
+								<li>
+									<a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+</body>
+</html>

@@ -128,13 +128,13 @@
                                     {% csrf_token %}
                                     <div class="row uniform">
                                         <div class="6u 12u$(small)">
-                                            <input style="text-align: center" name="GroupID" id="GroupID" value="{{GroupID}}" placeholder="GroupID" type="text">
+                                            群聊ID:<input style="text-align: center" name="GroupID" id="GroupID" value="{{GroupID}}" placeholder="GroupID" type="text">
                                         </div>
                                         <div class="6u$ 12u$(small)">
-                                            <input style="text-align: center" name="GroupName" id="GroupName" value="{{GroupName}}" placeholder="GroupName" type="text">
+                                            群聊名字:<input style="text-align: center" name="GroupName" id="GroupName" value="{{GroupName}}" placeholder="GroupName" type="text">
                                         </div>
                                         <div class="12u$">
-                                            <textarea name="INFO" id="INFO" placeholder="{{ INFO }}" rows="6"></textarea>
+                                            群聊公告:<textarea name="INFO" id="INFO" placeholder="{{ INFO }}" rows="6"></textarea>
                                         </div>
                                         <div class="12u$">
                                             <div class="align-center">

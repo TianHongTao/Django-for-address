@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import transaction
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import hashlib
@@ -47,19 +48,13 @@ def friend(request):
             cursor.execute("SELECT * FROM Address.USERINFO WHERE ID = %d" % (friendlist[i][0]))
             UserInfo = cursor.fetchone()
             cursor.execute(
-                "SELECT LOCATION.LOCATION,PARENT_ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (
+                "SELECT LOCATION.LOCATION,PARENT_ID,LOCATION.ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (
                     int(friendlist[i][0])))
             location = cursor.fetchone()
             if location == None:
                 break
-            address = ""
-            while int(location[1]) != 1:
-                address = address + location[0] + " "
-                cursor.execute(
-                    "SELECT LOCATION.LOCATION,PARENT_ID FROM LOCATION WHERE LOCATION.ID = %d " % (
-                        int(location[1])))
-                location = cursor.fetchone()
-            address = address + location[0] + " "
+            cursor.execute("call get_full_location(%d)"%(location[2]))
+            address = cursor.fetchone()[0]
             remark = friendlist[i][1]
             cursor.execute("SELECT WECHATID FROM Address.ID_WECHATID WHERE ID = %d" % (friendlist[i][0]))
             WechatID = cursor.fetchone()
@@ -95,17 +90,11 @@ def myself(request):
             user_id = models.IdWechatid.objects.filter(wechatid=WechatID).first()
             cursor.execute("SELECT * FROM USERINFO WHERE ID = %d" %(int(user_id.id)))
             data = cursor.fetchone()
-            cursor.execute("SELECT LOCATION.LOCATION,PARENT_ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (int(user_id.id)))
+            cursor.execute("SELECT LOCATION.LOCATION,PARENT_ID,LOCATION.ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (int(user_id.id)))
             location = cursor.fetchone()
-            address = ""
-            # print(location)
-            while int(location[1]) != 1:
-                address = address+location[0]+" "
-                cursor.execute(
-                    "SELECT LOCATION.LOCATION,PARENT_ID FROM LOCATION WHERE LOCATION.ID = %d " % (
-                        int(location[1])))
-                location = cursor.fetchone()
-            address = address + location[0] + " "
+            cursor.execute("call get_full_location(%d)"%(location[2]))
+            address = cursor.fetchone()[0]
+            print(address)
 
         except Exception as e:
             print(e)
@@ -204,17 +193,10 @@ def someone(request):
             cursor.execute("SELECT * FROM USERINFO WHERE ID = %d" %(int(user_id.id)))
             data = cursor.fetchone()
             request.session['friendID'] = wechatID
-            cursor.execute("SELECT LOCATION.LOCATION,PARENT_ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (int(user_id.id)))
+            cursor.execute("SELECT LOCATION.LOCATION,PARENT_ID,LOCATION.ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (int(user_id.id)))
             location = cursor.fetchone()
-            address = ""
-            # print(location)
-            while int(location[1]) != 1:
-                address = address+location[0]+" "
-                cursor.execute(
-                    "SELECT LOCATION.LOCATION,PARENT_ID FROM LOCATION WHERE LOCATION.ID = %d " % (
-                        int(location[1])))
-                location = cursor.fetchone()
-            address = address + location[0] + " "
+            cursor.execute("call get_full_location(%d)"%(location[2]))
+            address = cursor.fetchone()[0]
 
         except Exception as e:
             print(e)
@@ -370,17 +352,10 @@ def Users(request):
             cursor.execute("SELECT * FROM USERINFO WHERE ID = %d" %(int(user_id.id)))
             data = cursor.fetchone()
             request.session['friendID'] = wechatID
-            cursor.execute("SELECT LOCATION.LOCATION,PARENT_ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (int(user_id.id)))
+            cursor.execute("SELECT LOCATION.LOCATION,PARENT_ID,LOCATION.ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (int(user_id.id)))
             location = cursor.fetchone()
-            address = ""
-            # print(location)
-            while int(location[1]) != 1:
-                address = address+location[0]+" "
-                cursor.execute(
-                    "SELECT LOCATION.LOCATION,PARENT_ID FROM LOCATION WHERE LOCATION.ID = %d " % (
-                        int(location[1])))
-                location = cursor.fetchone()
-            address = address + location[0] + " "
+            cursor.execute("call get_full_location(%d)"%(location[2]))
+            address = cursor.fetchone()[0]
 
         except Exception as e:
             print(e)
@@ -508,37 +483,40 @@ def GroupInfo(request):
     else:
         cursor.execute("SELECT NAME,INFO,ID FROM Address.group WHERE ID = %d"%(int(GroupID)))
         GroupInfo = cursor.fetchone()
+
+        if GroupInfo == None:
+            messages.error(request, '无当前搜索的群聊', extra_tags='bg-warning text-warning')
+            return redirect('/GroupShow/')
+
         cursor.execute("SELECT User_ID FROM Group_Relation WHERE Group_ID = %d"%(int(GroupID)))
         GroupPerson = cursor.fetchall()
         friendlist = GroupPerson
         infos = []
 
+        NUM1 = len(friendlist)
+        if NUM1 == 0:
+            NUM1 = NUM
+
         if request.GET.get('page') == None:
             i = 0
         else:
-            i = (int(request.GET.get('page'))-1)*NUM
+            i = (int(request.GET.get('page'))-1)*NUM1
             request.session["i"] = i
 
-        while(i - request.session.get('i') < NUM):
+        while(i - request.session.get('i') < NUM1):
             if i >= len(friendlist):
                 break
             cursor.execute("SELECT * FROM Address.USERINFO WHERE ID = %d" % (friendlist[i][0]))
             UserInfo = cursor.fetchone()
             cursor.execute(
-                "SELECT LOCATION.LOCATION,PARENT_ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (
+                "SELECT LOCATION.LOCATION,PARENT_ID,LOCATION.ID FROM ID_LOCATION,LOCATION WHERE ID_LOCATION.ID = %d AND ID_LOCATION.LOCATION_ID = LOCATION.ID" % (
                     int(friendlist[i][0])))
             location = cursor.fetchone()
             print(location)
             if location == None:
                 break
-            address = ""
-            while int(location[1]) != 1:
-                address = address + location[0] + " "
-                cursor.execute(
-                    "SELECT LOCATION.LOCATION,PARENT_ID FROM LOCATION WHERE LOCATION.ID = %d " % (
-                        int(location[1])))
-                location = cursor.fetchone()
-            address = address + location[0] + " "
+            cursor.execute("call get_full_location(%d)"%(location[2]))
+            address = cursor.fetchone()[0]
             cursor.execute("SELECT USERNAME FROM Address.USERINFO WHERE ID = %d"%(friendlist[i][0]))
             remark = cursor.fetchone()
             cursor.execute("SELECT WECHATID FROM Address.ID_WECHATID WHERE ID = %d" % (friendlist[i][0]))
@@ -553,7 +531,7 @@ def GroupInfo(request):
             infos.append(info)
             i+=1
 
-        p = Paginator(GroupPerson, NUM,2)
+        p = Paginator(GroupPerson, NUM1,2)
         page = request.GET.get('page')
         try:
             contacts = p.page(page)
@@ -645,7 +623,6 @@ def OfficialAccountShow(request):
         return render(request, "OfficialAccountShow.html", {'contacts': contacts, 'infos': infos})
 
 def OffInfo(request):
-    print("OfficialAccountInfo")
     OfficialAccountName = request.POST['Name']
     is_alive = request.session.get('is_login')
     if is_alive == None or is_alive == False:
@@ -654,6 +631,9 @@ def OffInfo(request):
     else:
         cursor.execute("SELECT * FROM Address.OfficialAccount WHERE NAME = \"%s\""%(str(OfficialAccountName)))
         OfficialAccountINFO = cursor.fetchone()
+        if OfficialAccountINFO == None:
+            messages.error(request, '无当前搜索的公众号', extra_tags='bg-warning text-warning')
+            return redirect('/OfficialAccountShow/')
         cursor.execute("SELECT * FROM Address.OfficialAccount_Relation WHERE Off_ID = %d"%(int(OfficialAccountINFO[0])))
         OfficialAccountRelations = cursor.fetchall()
         nums = len(OfficialAccountRelations)
@@ -729,6 +709,28 @@ def Offdel(request):
     cursor.execute("DELETE FROM Address.OfficialAccount_Relation WHERE User_ID = %d and Off_ID = %d"%(int(now.id),int(OfficialAccountID)))
     cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
     db.commit()
+    return redirect("/OfficialAccountShow/")
+
+def Wordadd(request):
+    request.session["offID"] = request.POST['ID'][3:]
+    return render(request,"Word.html")
+
+def regWord(request):
+    WechatID = request.session.get('WechatID')
+    now = models.IdWechatid.objects.filter(wechatid=WechatID).first()
+    offID = request.session.get('offID')
+    Name = request.POST['Name']
+    INFO = request.POST['INFO']
+    try:
+        cursor.execute("INSERT INTO Word(NAME,INFO) VALUES (\"%s\",\"%s\")"%(str(Name),str(INFO)))
+        cursor.execute("SELECT ID FROM Word WHERE NAME  = \"%s\" AND INFO = \"%s\"" % (str(Name), str(INFO)))
+        ID = cursor.fetchone()
+        cursor.execute("INSERT INTO OfficialAccount_Word(Off_ID, Word_ID) VALUES (%d,%d)"%(int(offID),int(ID[0])))
+        cursor.execute("call INSERTINTOOFF(%d,%d)"%(int(now.id),int(offID)))
+        db.commit()
+
+    except Exception as e:
+        print(e)
     return redirect("/OfficialAccountShow/")
 
 def Group(request):

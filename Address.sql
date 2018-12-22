@@ -16,6 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `Group_Relation`
+--
+
+DROP TABLE IF EXISTS `Group_Relation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Group_Relation` (
+  `User_ID` int(11) NOT NULL,
+  `Group_ID` int(11) NOT NULL,
+  PRIMARY KEY (`User_ID`,`Group_ID`),
+  KEY `Group_Relation_group_ID_fk` (`Group_ID`),
+  CONSTRAINT `Group_Relation_ID_WECHATID_ID_fk` FOREIGN KEY (`User_ID`) REFERENCES `ID_WECHATID` (`ID`),
+  CONSTRAINT `Group_Relation_group_ID_fk` FOREIGN KEY (`Group_ID`) REFERENCES `group` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Group_Relation`
+--
+
+LOCK TABLES `Group_Relation` WRITE;
+/*!40000 ALTER TABLE `Group_Relation` DISABLE KEYS */;
+INSERT INTO `Group_Relation` VALUES (33,1),(59,1),(33,2),(59,2),(33,3),(33,16),(33,17),(36,17),(37,17),(33,18),(36,18),(37,18),(39,18),(59,18),(33,19),(34,19),(40,19),(48,19);
+/*!40000 ALTER TABLE `Group_Relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Temporary table structure for view `ID_INFO`
 --
 
@@ -56,7 +83,7 @@ CREATE TABLE `ID_LOCATION` (
 
 LOCK TABLES `ID_LOCATION` WRITE;
 /*!40000 ALTER TABLE `ID_LOCATION` DISABLE KEYS */;
-INSERT INTO `ID_LOCATION` VALUES (33,69),(34,73),(35,75),(36,77),(37,79),(38,81),(39,83),(40,85);
+INSERT INTO `ID_LOCATION` VALUES (33,69),(36,77),(37,79),(38,81),(59,94);
 /*!40000 ALTER TABLE `ID_LOCATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,7 +99,7 @@ CREATE TABLE `ID_WECHATID` (
   `WECHATID` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_WECHATID_WECHATID_uindex` (`WECHATID`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +108,7 @@ CREATE TABLE `ID_WECHATID` (
 
 LOCK TABLES `ID_WECHATID` WRITE;
 /*!40000 ALTER TABLE `ID_WECHATID` DISABLE KEYS */;
-INSERT INTO `ID_WECHATID` VALUES (34,'THT1'),(33,'THT123456'),(35,'THT2'),(36,'THT3'),(37,'THT4'),(38,'THT5'),(39,'THT6'),(40,'THT7');
+INSERT INTO `ID_WECHATID` VALUES (58,'Admin'),(33,'THT123456'),(36,'THT3'),(37,'THT4'),(38,'THT5'),(39,'THT6'),(40,'THT7'),(48,'zhanglang'),(59,'zhanlang2');
 /*!40000 ALTER TABLE `ID_WECHATID` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -118,7 +145,7 @@ CREATE TABLE `LOCATION` (
   `LOCATION` char(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `LOCATION_pk` (`LOCATION`,`PARENT_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=gbk;
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=gbk;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,8 +154,89 @@ CREATE TABLE `LOCATION` (
 
 LOCK TABLES `LOCATION` WRITE;
 /*!40000 ALTER TABLE `LOCATION` DISABLE KEYS */;
-INSERT INTO `LOCATION` VALUES (69,1,'北京'),(71,70,'北下关'),(81,80,'成都'),(83,82,'赤峰'),(72,1,'贵州'),(70,69,'海淀'),(79,78,'晋城'),(85,84,'拉萨'),(82,1,'内蒙古'),(75,74,'浦东'),(77,76,'青岛'),(76,1,'山东'),(78,1,'山西'),(74,1,'上海'),(80,1,'四川'),(84,1,'西藏'),(73,72,'兴义');
+INSERT INTO `LOCATION` VALUES (91,1,'安徽'),(69,1,'北京'),(71,70,'北下关'),(81,80,'成都'),(83,82,'赤峰'),(92,91,'凤阳'),(72,1,'贵州'),(70,69,'海淀'),(79,78,'晋城'),(94,93,'昆明'),(85,84,'拉萨'),(82,1,'内蒙古'),(75,74,'浦东'),(77,76,'青岛'),(76,1,'山东'),(78,1,'山西'),(74,1,'上海'),(80,1,'四川'),(84,1,'西藏'),(73,72,'兴义'),(93,1,'云南');
 /*!40000 ALTER TABLE `LOCATION` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `OfficialAccount`
+--
+
+DROP TABLE IF EXISTS `OfficialAccount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `OfficialAccount` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(255) CHARACTER SET gbk DEFAULT NULL,
+  `INFO` varchar(255) DEFAULT NULL,
+  `MAINBODY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `OfficialAccount_NAME_uindex` (`NAME`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `OfficialAccount`
+--
+
+LOCK TABLES `OfficialAccount` WRITE;
+/*!40000 ALTER TABLE `OfficialAccount` DISABLE KEYS */;
+INSERT INTO `OfficialAccount` VALUES (1,'测试公众号1','我是测试公众号1','个人'),(2,'测试公众号2','测试公众号2','个人'),(3,'测试公众号3','测试公众号3','个人'),(4,'测试公众号4','测试公众号4','个人'),(5,'测试公众号5','测试公众号5','企业'),(6,'测试公众号6','我是测试公众号6','营销');
+/*!40000 ALTER TABLE `OfficialAccount` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `OfficialAccount_Relation`
+--
+
+DROP TABLE IF EXISTS `OfficialAccount_Relation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `OfficialAccount_Relation` (
+  `User_ID` int(11) NOT NULL,
+  `Off_ID` int(11) NOT NULL,
+  PRIMARY KEY (`User_ID`,`Off_ID`),
+  KEY `OfficialAccount_Relation_OfficialAccount_ID_fk` (`Off_ID`),
+  CONSTRAINT `OfficialAccount_Relation_ID_WECHATID_ID_fk` FOREIGN KEY (`User_ID`) REFERENCES `ID_WECHATID` (`ID`),
+  CONSTRAINT `OfficialAccount_Relation_OfficialAccount_ID_fk` FOREIGN KEY (`Off_ID`) REFERENCES `OfficialAccount` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `OfficialAccount_Relation`
+--
+
+LOCK TABLES `OfficialAccount_Relation` WRITE;
+/*!40000 ALTER TABLE `OfficialAccount_Relation` DISABLE KEYS */;
+INSERT INTO `OfficialAccount_Relation` VALUES (33,1),(59,1),(33,2),(48,2),(59,2),(33,3),(59,3),(33,5),(59,5),(40,6),(59,6);
+/*!40000 ALTER TABLE `OfficialAccount_Relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `OfficialAccount_Word`
+--
+
+DROP TABLE IF EXISTS `OfficialAccount_Word`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `OfficialAccount_Word` (
+  `Off_ID` int(11) NOT NULL,
+  `Word_ID` int(11) NOT NULL,
+  PRIMARY KEY (`Off_ID`,`Word_ID`),
+  KEY `OfficialAccount_Word_Word_ID_fk` (`Word_ID`),
+  CONSTRAINT `OfficialAccount_Word_OfficialAccount_ID_fk` FOREIGN KEY (`Off_ID`) REFERENCES `OfficialAccount` (`ID`),
+  CONSTRAINT `OfficialAccount_Word_Word_ID_fk` FOREIGN KEY (`Word_ID`) REFERENCES `Word` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `OfficialAccount_Word`
+--
+
+LOCK TABLES `OfficialAccount_Word` WRITE;
+/*!40000 ALTER TABLE `OfficialAccount_Word` DISABLE KEYS */;
+INSERT INTO `OfficialAccount_Word` VALUES (1,1),(1,2),(1,3),(1,5),(3,9),(4,11),(6,12),(6,25),(5,26);
+/*!40000 ALTER TABLE `OfficialAccount_Word` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -155,7 +263,7 @@ CREATE TABLE `RELATION` (
 
 LOCK TABLES `RELATION` WRITE;
 /*!40000 ALTER TABLE `RELATION` DISABLE KEYS */;
-INSERT INTO `RELATION` VALUES (33,34,'THT1'),(33,35,'THT２'),(33,36,'THT3'),(33,37,'THT4'),(33,38,'THT5'),(33,39,'THT6');
+INSERT INTO `RELATION` VALUES (33,36,'THT3'),(33,37,'THT4'),(33,39,'THT6'),(59,33,'田宏韬2'),(59,36,'THT3'),(59,37,'THT4');
 /*!40000 ALTER TABLE `RELATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,14 +276,14 @@ DROP TABLE IF EXISTS `USERINFO`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `USERINFO` (
   `ID` int(11) NOT NULL,
-  `PHONE` varchar(255) DEFAULT NULL,
-  `PASSWORD` varchar(255) NOT NULL,
+  `PHONE` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  `PASSWORD` varchar(255) CHARACTER SET latin1 NOT NULL,
   `USERNAME` varchar(255) CHARACTER SET gbk NOT NULL,
   `signature` varchar(255) CHARACTER SET gbk DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`ID`),
   CONSTRAINT `USERINFO_ID_WECHATID_ID_fk` FOREIGN KEY (`ID`) REFERENCES `ID_WECHATID` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +292,7 @@ CREATE TABLE `USERINFO` (
 
 LOCK TABLES `USERINFO` WRITE;
 /*!40000 ALTER TABLE `USERINFO` DISABLE KEYS */;
-INSERT INTO `USERINFO` VALUES (33,'18801116787','ThT123456','THT','你好呀','16281173@bjtu.edu.cn'),(34,'110','ThT123456','THT1','我是THT1','16281174@bjtu.edu.cn'),(35,'120','ThT123456','THT２','我是THT２','16281175@bjtu.edu.cn'),(36,'130','ThT123456','THT3','我是THT3','16281175@bjtu.edu.cn'),(37,'140','ThT123456','THT4','我是THT4','16281176@bjtu.edu.cn'),(38,'150','ThT123456','THT5','我是THT5','16281177@bjtu.edu.cn'),(39,'160','ThT123456','THT6','我是THT6','16281178@bjtu.edu.cn');
+INSERT INTO `USERINFO` VALUES (33,'18801116788','ThT123456','田宏韬2','','16281173@bjtu.edu.cn'),(36,'130','ThT123456','THT3','我是THT3','16281175@bjtu.edu.cn'),(37,'140','ThT123456','THT4','我是THT4','16281176@bjtu.edu.cn'),(38,'150','ThT123456','THT5','我是THT5','16281177@bjtu.edu.cn'),(39,'160','ThT123456','THT6','我是THT6','16281178@bjtu.edu.cn'),(48,'110','ThT123456','青蛙','我是青蛙！','16281180@bjtu.edu.cn'),(58,'110','Admin123','管理员','管理员帐号','Admin@admin.cn'),(59,'18801116795','ThT123456','战狼2','战狼2！！！','16281195@bjtu.edu.cn');
 /*!40000 ALTER TABLE `USERINFO` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -196,32 +304,14 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER CHECK_MAIL BEFORE INSERT ON Address.USERINFO for each row
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 trigger CHECK_MAIL
+  before INSERT
+  on USERINFO
+  for each row
   BEGIN
-    IF(NEW.email <> (SELECT email FROM USERINFO WHERE ID = NEW.ID))
+    IF(NEW.email in (SELECT email FROM USERINFO))
     then
       SIGNAL SQLSTATE 'TX000' SET MESSAGE_TEXT = '邮箱重复！';
-    end if;
-  end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER UPDATE_CHECK BEFORE UPDATE ON Address.USERINFO for each row
-  BEGIN
-    IF(NEW.PASSWORD <> (SELECT PASSWORD FROM USERINFO WHERE ID = NEW.ID))
-    then
-      SIGNAL SQLSTATE 'TX001' SET MESSAGE_TEXT = '请输入与原密码不相同的密码！';
     end if;
   end */;;
 DELIMITER ;
@@ -242,6 +332,31 @@ SET character_set_client = utf8;
  1 AS `USERNAME`,
  1 AS `LOCATION`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `Word`
+--
+
+DROP TABLE IF EXISTS `Word`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Word` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `INFO` varchar(255) DEFAULT NULL,
+  `NAME` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Word`
+--
+
+LOCK TABLES `Word` WRITE;
+/*!40000 ALTER TABLE `Word` DISABLE KEYS */;
+INSERT INTO `Word` VALUES (1,'测试文章1','测试1'),(2,'测试文章2','测试2'),(3,'测试文章3','测试3'),(5,'我是测试文章4','测试文章4'),(9,'我是测试文章5','测试文章5'),(11,'测试公众号6','测试公众号6'),(12,'我是测试文章7','测试文章7'),(25,'我是测试文章8','测试文章8'),(26,'我是测试文章9','测试文章9');
+/*!40000 ALTER TABLE `Word` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `auth_group`
@@ -519,8 +634,33 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('noffgrmuahhpmcdlbcffv9f7ojsaoeu4','MWYwYTQyMmJmMGM5ZDhmMTE0MTViYTAxZjIzZTBjODFjZjM1ZjA5Yzp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlRIVDEyMzQ1NiIsIlBhc3N3b3JkIjoiVGhUMTIzNDU2IiwiaSI6M30=','2019-01-02 03:14:28.576281'),('swavw4shtwhaekp32wc6cgehaeeh1wk0','OTFmNDNlODU5NWY4MjEzY2Q4MjI0YjI2MzZlMDJlNmY1NWQ4N2FkZDp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlRIVDEyMzQ1NiIsIlBhc3N3b3JkIjoiVGhUMTIzNDU2IiwiZnJpZW5kSUQiOiJUSFQxMjM0NTYiLCJpIjozfQ==','2019-01-01 12:17:45.609004'),('z3kqxfibpmlb7vy2th13p625g4zuiu7x','Y2M3YmViYTg1YzU4YzljYzZhZWYzYWUyODEzYTk5YmE3Nzg2YjJkYzp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlNIVUpVS1VDRVNISTEiLCJQYXNzd29yZCI6IjEyMzQ1NiIsImZyaWVuZElEIjoid3V5YW5neWFuZyJ9','2018-12-31 10:27:35.560071');
+INSERT INTO `django_session` VALUES ('noffgrmuahhpmcdlbcffv9f7ojsaoeu4','Mjk3ZmZhNzgxNThmZTZmNzI1ZWQyYjczZTgzOWNlNTA5Mzk3NTcwODp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IkFkbWluIiwiUGFzc3dvcmQiOiJBZG1pbjEyMyIsImkiOjAsImZyaWVuZElEIjoiVEhUMSJ9','2019-01-04 15:13:55.791533'),('swavw4shtwhaekp32wc6cgehaeeh1wk0','ZDI1ZmIyZjYwYzJiMTI1OTRmMTg4NWZkNjI0YjVhMGNmODA3YjUxZDp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlRIVDEyMzQ1NiIsIlBhc3N3b3JkIjoiVGhUMTIzNDU2IiwiZnJpZW5kSUQiOiJUSFQxMjM0NTYiLCJpIjowLCJvZmZJRCI6IiJ9','2019-01-05 04:42:47.766214'),('z3kqxfibpmlb7vy2th13p625g4zuiu7x','Y2M3YmViYTg1YzU4YzljYzZhZWYzYWUyODEzYTk5YmE3Nzg2YjJkYzp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlNIVUpVS1VDRVNISTEiLCJQYXNzd29yZCI6IjEyMzQ1NiIsImZyaWVuZElEIjoid3V5YW5neWFuZyJ9','2018-12-31 10:27:35.560071');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `group`
+--
+
+DROP TABLE IF EXISTS `group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `group` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(255) DEFAULT NULL,
+  `INFO` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `group`
+--
+
+LOCK TABLES `group` WRITE;
+/*!40000 ALTER TABLE `group` DISABLE KEYS */;
+INSERT INTO `group` VALUES (1,'测试1','测试群聊1'),(2,'测试2','测试群聊2'),(3,'测试3','测试群聊3'),(16,'测试4','测试群聊4'),(17,'测试５','测试群聊５'),(18,'测试6','测试群聊6'),(19,'测试公众号6','测试公众号6');
+/*!40000 ALTER TABLE `group` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -568,4 +708,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-20 14:45:40
+-- Dump completed on 2018-12-22 12:45:14

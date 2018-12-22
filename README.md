@@ -10,19 +10,30 @@ Django+HTML+CSS+SQL
 ## 页面展示
 
 ### 主页面
-![](ReadMePicture/Selection_029.png)
-![](ReadMePicture/Selection_030.png)
-![](ReadMePicture/Selection_032.png)
+![](ReadMePicture/1.png)
+![](ReadMePicture/2.png)
+![](ReadMePicture/3.png)
 
 ### 好友展示页面
-![](ReadMePicture/Selection_033.png)
-![](ReadMePicture/Selection_036.png)
+![](ReadMePicture/4.png)
+![](ReadMePicture/7.png)
 
 ### 个人名片展示页面
-![](ReadMePicture/Selection_034.png)
+![](ReadMePicture/5.png)
 
 ### 好友名片展示页面
-![](ReadMePicture/Selection_035.png)
+![](ReadMePicture/6.png)
+
+### 群聊展示页面
+![](ReadMePicture/8.png)
+![](ReadMePicture/9.png)
+![](ReadMePicture/10.png)
+
+### 公众号展示页面
+![](ReadMePicture/11.png)
+![](ReadMePicture/12.png)
+![](ReadMePicture/13.png)
+![](ReadMePicture/14.png)
 
 ## 数据库导入方法
 1. 首先建空数据库 mysql>create database dbname;
@@ -34,4 +45,4 @@ Django+HTML+CSS+SQL
     + 方法二：直接使用 mysql -u用户名 -p密码 数据库名 < 数据库名.sql
 
 ## 系统ER图
-![](ReadMePicture/Selection_028.png)
+![](ReadMePicture/16.png)

@@ -573,8 +573,6 @@ def regGroup(request):
         print(e)
     return redirect("/GroupShow/")
 
-def Group(request):
-    return render(request,"Group.html")
 
 def OfficialAccountShow(request):
     is_alive = request.session.get('is_login')

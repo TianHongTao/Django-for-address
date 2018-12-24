@@ -120,11 +120,11 @@ def registe(request):
     verification = [False,False,False]
 
     for i in Password:
-        if(i>'1' and i<'9'):
+        if(i>='1' and i<='9'):
             verification[0] = True
-        elif(i>'a' and i<'z'):
+        elif(i>='a' and i<='z'):
             verification[1] = True
-        elif(i>'A' and i<'Z'):
+        elif(i>='A' and i<='Z'):
             verification[2] = True
 
     if False in verification:

@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `Address` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `Address`;
 -- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
 --
 -- Host: localhost    Database: Address
@@ -38,7 +40,7 @@ CREATE TABLE `Group_Relation` (
 
 LOCK TABLES `Group_Relation` WRITE;
 /*!40000 ALTER TABLE `Group_Relation` DISABLE KEYS */;
-INSERT INTO `Group_Relation` VALUES (33,1),(59,1),(33,2),(59,2),(33,3),(33,16),(33,17),(36,17),(37,17),(33,18),(36,18),(37,18),(39,18),(59,18),(33,19),(34,19),(40,19),(48,19);
+INSERT INTO `Group_Relation` VALUES (33,1),(59,1),(33,2),(59,2),(60,2),(60,3),(36,17),(37,17),(33,18),(36,18),(37,18),(39,18),(59,18),(60,18),(34,19),(40,19),(48,19),(60,20),(36,21),(37,21),(59,21),(60,21),(38,22),(39,22),(59,22),(60,22);
 /*!40000 ALTER TABLE `Group_Relation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +85,7 @@ CREATE TABLE `ID_LOCATION` (
 
 LOCK TABLES `ID_LOCATION` WRITE;
 /*!40000 ALTER TABLE `ID_LOCATION` DISABLE KEYS */;
-INSERT INTO `ID_LOCATION` VALUES (33,69),(36,77),(37,79),(38,81),(59,94);
+INSERT INTO `ID_LOCATION` VALUES (33,69),(38,81),(59,94),(60,95),(61,98),(62,100);
 /*!40000 ALTER TABLE `ID_LOCATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +101,7 @@ CREATE TABLE `ID_WECHATID` (
   `WECHATID` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_WECHATID_WECHATID_uindex` (`WECHATID`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +110,7 @@ CREATE TABLE `ID_WECHATID` (
 
 LOCK TABLES `ID_WECHATID` WRITE;
 /*!40000 ALTER TABLE `ID_WECHATID` DISABLE KEYS */;
-INSERT INTO `ID_WECHATID` VALUES (58,'Admin'),(33,'THT123456'),(36,'THT3'),(37,'THT4'),(38,'THT5'),(39,'THT6'),(40,'THT7'),(48,'zhanglang'),(59,'zhanlang2');
+INSERT INTO `ID_WECHATID` VALUES (58,'Admin'),(60,'shujuku'),(61,'shujuku2222'),(62,'shujuku222222'),(33,'THT123456'),(38,'THT5'),(39,'THT6'),(40,'THT7'),(48,'zhanglang'),(59,'zhanlang2');
 /*!40000 ALTER TABLE `ID_WECHATID` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -145,7 +147,7 @@ CREATE TABLE `LOCATION` (
   `LOCATION` char(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `LOCATION_pk` (`LOCATION`,`PARENT_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=gbk;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=gbk;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +156,7 @@ CREATE TABLE `LOCATION` (
 
 LOCK TABLES `LOCATION` WRITE;
 /*!40000 ALTER TABLE `LOCATION` DISABLE KEYS */;
-INSERT INTO `LOCATION` VALUES (91,1,'安徽'),(69,1,'北京'),(71,70,'北下关'),(81,80,'成都'),(83,82,'赤峰'),(92,91,'凤阳'),(72,1,'贵州'),(70,69,'海淀'),(79,78,'晋城'),(94,93,'昆明'),(85,84,'拉萨'),(82,1,'内蒙古'),(75,74,'浦东'),(77,76,'青岛'),(76,1,'山东'),(78,1,'山西'),(74,1,'上海'),(80,1,'四川'),(84,1,'西藏'),(73,72,'兴义'),(93,1,'云南');
+INSERT INTO `LOCATION` VALUES (98,97,'sjijsi'),(91,1,'安徽'),(69,1,'北京'),(71,70,'北下关'),(95,1,'朝阳区'),(81,80,'成都'),(83,82,'赤峰'),(92,91,'凤阳'),(72,1,'贵州'),(70,69,'海淀'),(79,78,'晋城'),(94,93,'昆明'),(85,84,'拉萨'),(82,1,'内蒙古'),(75,74,'浦东'),(77,76,'青岛'),(76,1,'山东'),(78,1,'山西'),(74,1,'上海'),(100,99,'实际上内'),(99,1,'实时'),(96,95,'世贸天街'),(97,1,'是'),(80,1,'四川'),(84,1,'西藏'),(73,72,'兴义'),(93,1,'云南');
 /*!40000 ALTER TABLE `LOCATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +174,7 @@ CREATE TABLE `OfficialAccount` (
   `MAINBODY` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `OfficialAccount_NAME_uindex` (`NAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +183,7 @@ CREATE TABLE `OfficialAccount` (
 
 LOCK TABLES `OfficialAccount` WRITE;
 /*!40000 ALTER TABLE `OfficialAccount` DISABLE KEYS */;
-INSERT INTO `OfficialAccount` VALUES (1,'测试公众号1','我是测试公众号1','个人'),(2,'测试公众号2','测试公众号2','个人'),(3,'测试公众号3','测试公众号3','个人'),(4,'测试公众号4','测试公众号4','个人'),(5,'测试公众号5','测试公众号5','企业'),(6,'测试公众号6','我是测试公众号6','营销');
+INSERT INTO `OfficialAccount` VALUES (1,'测试公众号1','我是测试公众号1','个人'),(2,'测试公众号2','测试公众号2','个人'),(3,'测试公众号3','测试公众号3','个人'),(4,'测试公众号4','测试公众号4','个人'),(5,'测试公众号5','测试公众号5','企业'),(6,'测试公众号6','我是测试公众号6','营销'),(7,'数据库公众号','这是数据库公众号','企业'),(8,'数据库测试51515151','数据库测试51515151','个人');
 /*!40000 ALTER TABLE `OfficialAccount` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -208,7 +210,7 @@ CREATE TABLE `OfficialAccount_Relation` (
 
 LOCK TABLES `OfficialAccount_Relation` WRITE;
 /*!40000 ALTER TABLE `OfficialAccount_Relation` DISABLE KEYS */;
-INSERT INTO `OfficialAccount_Relation` VALUES (33,1),(59,1),(33,2),(48,2),(59,2),(33,3),(59,3),(33,5),(59,5),(40,6),(59,6);
+INSERT INTO `OfficialAccount_Relation` VALUES (33,1),(59,1),(60,1),(48,2),(59,2),(33,3),(59,3),(60,4),(33,5),(59,5),(60,5),(40,6),(59,6),(60,7),(60,8);
 /*!40000 ALTER TABLE `OfficialAccount_Relation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +237,7 @@ CREATE TABLE `OfficialAccount_Word` (
 
 LOCK TABLES `OfficialAccount_Word` WRITE;
 /*!40000 ALTER TABLE `OfficialAccount_Word` DISABLE KEYS */;
-INSERT INTO `OfficialAccount_Word` VALUES (1,1),(1,2),(1,3),(1,5),(3,9),(4,11),(6,12),(6,25),(5,26);
+INSERT INTO `OfficialAccount_Word` VALUES (1,1),(1,2),(1,3),(1,5),(3,9),(4,11),(6,12),(6,25),(5,26),(4,27),(7,28),(8,29);
 /*!40000 ALTER TABLE `OfficialAccount_Word` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,7 +265,7 @@ CREATE TABLE `RELATION` (
 
 LOCK TABLES `RELATION` WRITE;
 /*!40000 ALTER TABLE `RELATION` DISABLE KEYS */;
-INSERT INTO `RELATION` VALUES (33,36,'THT3'),(33,37,'THT4'),(33,39,'THT6'),(59,33,'田宏韬2'),(59,36,'THT3'),(59,37,'THT4');
+INSERT INTO `RELATION` VALUES (33,39,'THT6'),(59,33,'田宏韬2'),(60,33,'田宏韬2'),(60,38,'THT5');
 /*!40000 ALTER TABLE `RELATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,7 +294,7 @@ CREATE TABLE `USERINFO` (
 
 LOCK TABLES `USERINFO` WRITE;
 /*!40000 ALTER TABLE `USERINFO` DISABLE KEYS */;
-INSERT INTO `USERINFO` VALUES (33,'18801116788','ThT123456','田宏韬2','','16281173@bjtu.edu.cn'),(36,'130','ThT123456','THT3','我是THT3','16281175@bjtu.edu.cn'),(37,'140','ThT123456','THT4','我是THT4','16281176@bjtu.edu.cn'),(38,'150','ThT123456','THT5','我是THT5','16281177@bjtu.edu.cn'),(39,'160','ThT123456','THT6','我是THT6','16281178@bjtu.edu.cn'),(48,'110','ThT123456','青蛙','我是青蛙！','16281180@bjtu.edu.cn'),(58,'110','Admin123','管理员','管理员帐号','Admin@admin.cn'),(59,'18801116795','ThT123456','战狼2','战狼2！！！','16281195@bjtu.edu.cn');
+INSERT INTO `USERINFO` VALUES (33,'18801116788','ThT123456','田宏韬2','','16281173@bjtu.edu.cn'),(38,'150','ThT123456','THT5','我是THT5','16281177@bjtu.edu.cn'),(39,'160','ThT123456','THT6','我是THT6','16281178@bjtu.edu.cn'),(48,'110','ThT123456','青蛙','我是青蛙！','16281180@bjtu.edu.cn'),(58,'110','Admin123','管理员','管理员帐号','Admin@admin.cn'),(59,'18801116795','ThT123456','战狼2','战狼2！！！','16281195@bjtu.edu.cn'),(60,'18801116789','QaZ872','数据库拉拉','','16281190@bjtu.edu.cn');
 /*!40000 ALTER TABLE `USERINFO` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -345,7 +347,7 @@ CREATE TABLE `Word` (
   `INFO` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,7 +356,7 @@ CREATE TABLE `Word` (
 
 LOCK TABLES `Word` WRITE;
 /*!40000 ALTER TABLE `Word` DISABLE KEYS */;
-INSERT INTO `Word` VALUES (1,'测试文章1','测试1'),(2,'测试文章2','测试2'),(3,'测试文章3','测试3'),(5,'我是测试文章4','测试文章4'),(9,'我是测试文章5','测试文章5'),(11,'测试公众号6','测试公众号6'),(12,'我是测试文章7','测试文章7'),(25,'我是测试文章8','测试文章8'),(26,'我是测试文章9','测试文章9');
+INSERT INTO `Word` VALUES (1,'测试文章1','测试1'),(2,'测试文章2','测试2'),(3,'测试文章3','测试3'),(5,'我是测试文章4','测试文章4'),(9,'我是测试文章5','测试文章5'),(11,'测试公众号6','测试公众号6'),(12,'我是测试文章7','测试文章7'),(25,'我是测试文章8','测试文章8'),(26,'我是测试文章9','测试文章9'),(27,'这是测试公众号文章4','测试公众号文章4'),(28,'数据库公众号１','数据库公众号１'),(29,'今天是周二','周二');
 /*!40000 ALTER TABLE `Word` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -634,7 +636,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('noffgrmuahhpmcdlbcffv9f7ojsaoeu4','Mjk3ZmZhNzgxNThmZTZmNzI1ZWQyYjczZTgzOWNlNTA5Mzk3NTcwODp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IkFkbWluIiwiUGFzc3dvcmQiOiJBZG1pbjEyMyIsImkiOjAsImZyaWVuZElEIjoiVEhUMSJ9','2019-01-04 15:13:55.791533'),('swavw4shtwhaekp32wc6cgehaeeh1wk0','ZDI1ZmIyZjYwYzJiMTI1OTRmMTg4NWZkNjI0YjVhMGNmODA3YjUxZDp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlRIVDEyMzQ1NiIsIlBhc3N3b3JkIjoiVGhUMTIzNDU2IiwiZnJpZW5kSUQiOiJUSFQxMjM0NTYiLCJpIjowLCJvZmZJRCI6IiJ9','2019-01-05 04:42:47.766214'),('z3kqxfibpmlb7vy2th13p625g4zuiu7x','Y2M3YmViYTg1YzU4YzljYzZhZWYzYWUyODEzYTk5YmE3Nzg2YjJkYzp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlNIVUpVS1VDRVNISTEiLCJQYXNzd29yZCI6IjEyMzQ1NiIsImZyaWVuZElEIjoid3V5YW5neWFuZyJ9','2018-12-31 10:27:35.560071');
+INSERT INTO `django_session` VALUES ('noffgrmuahhpmcdlbcffv9f7ojsaoeu4','NGRkNzc2ZTA2NjMyNmYyMmE2OWE5NTVmYzhlODU1MmY5YjIxNWExZDp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6InNodWp1a3UiLCJQYXNzd29yZCI6IlFhWjg3MiIsImkiOjAsImZyaWVuZElEIjoiVEhUNCAiLCJvZmZJRCI6IjgifQ==','2019-01-08 07:21:23.226103'),('swavw4shtwhaekp32wc6cgehaeeh1wk0','ZDI1ZmIyZjYwYzJiMTI1OTRmMTg4NWZkNjI0YjVhMGNmODA3YjUxZDp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlRIVDEyMzQ1NiIsIlBhc3N3b3JkIjoiVGhUMTIzNDU2IiwiZnJpZW5kSUQiOiJUSFQxMjM0NTYiLCJpIjowLCJvZmZJRCI6IiJ9','2019-01-05 04:42:47.766214'),('z3kqxfibpmlb7vy2th13p625g4zuiu7x','Y2M3YmViYTg1YzU4YzljYzZhZWYzYWUyODEzYTk5YmE3Nzg2YjJkYzp7ImlzX2xvZ2luIjp0cnVlLCJXZWNoYXRJRCI6IlNIVUpVS1VDRVNISTEiLCJQYXNzd29yZCI6IjEyMzQ1NiIsImZyaWVuZElEIjoid3V5YW5neWFuZyJ9','2018-12-31 10:27:35.560071');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -650,7 +652,7 @@ CREATE TABLE `group` (
   `NAME` varchar(255) DEFAULT NULL,
   `INFO` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -659,9 +661,92 @@ CREATE TABLE `group` (
 
 LOCK TABLES `group` WRITE;
 /*!40000 ALTER TABLE `group` DISABLE KEYS */;
-INSERT INTO `group` VALUES (1,'测试1','测试群聊1'),(2,'测试2','测试群聊2'),(3,'测试3','测试群聊3'),(16,'测试4','测试群聊4'),(17,'测试５','测试群聊５'),(18,'测试6','测试群聊6'),(19,'测试公众号6','测试公众号6');
+INSERT INTO `group` VALUES (1,'测试1','测试群聊1'),(2,'测试2','测试群聊2'),(3,'测试3','测试群聊3'),(16,'测试4','测试群聊4'),(17,'测试５','测试群聊５'),(18,'测试6','测试群聊6'),(19,'测试7','测试群聊7'),(20,'数据库群聊','我是数据库测试'),(21,'数据库群聊1','我是数据库群聊1'),(22,'数据库啦啦啦','设置为图');
 /*!40000 ALTER TABLE `group` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'Address'
+--
+
+--
+-- Dumping routines for database 'Address'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `delete_location` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_location`(IN location_id INT(11))
+begin
+    declare Location_id int(11) default null;
+    set Location_id = (select id from LOCATION where PARENT_ID = location_id);
+    while Location_id IS NOT NULL do
+      delete from LOCATION where ID = location_id;
+      set Location_id = (select id from LOCATION where PARENT_ID = location_id);
+    end while;
+  end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_full_location` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_full_location`(IN LOCATION_ID int)
+BEGIN
+    DECLARE fullLocation varchar(255);
+    DECLARE parentId INTEGER;
+    set fullLocation = (select LOCATION from LOCATION where ID = LOCATION_ID);
+    set parentId = (SELECT PARENT_ID FROM LOCATION WHERE ID = LOCATION_ID);
+    WHILE parentId != 1 do
+      set LOCATION_ID = parentId;
+      set parentId = (SELECT PARENT_ID FROM LOCATION WHERE ID = LOCATION_ID);
+      set fullLocation = CONCAT(fullLocation," ",(select LOCATION from LOCATION where ID = LOCATION_ID));
+    end while;
+    select fullLocation;
+  end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `INSERTINTOOFF` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERTINTOOFF`(IN ID int, IN Off int)
+BEGIN
+  IF ID NOT IN (SELECT User_ID FROM OfficialAccount_Relation WHERE Off_ID = Off)
+    THEN
+    INSERT INTO OfficialAccount_Relation(Off_ID,User_ID) VALUES (Off,ID);
+    commit;
+  end if;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Final view structure for view `ID_INFO`
@@ -708,4 +793,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-22 12:45:14
+-- Dump completed on 2018-12-26 22:58:03
